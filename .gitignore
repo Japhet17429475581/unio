@@ -1,0 +1,41 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub/
+build/
+*.private.env
+__pycache__/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local credentials, diagnostics, and release binaries (published as assets).
+.env
+.env.*
+!.env.example
+*.log
+*.apk
+*.aab
+*.jks
+*.keystore
+*.p12
+*.pem
+coverage/
+.pytest_cache/
+.venv/
+venv/
+*.py[cod]
+.openai/
+
+# The backend is published separately to backforunio.
+/lib/backend/
+/lib/backend.zip
+# Widget Preview related
+.widget_preview/

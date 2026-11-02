@@ -1,0 +1,19 @@
+# Keep correctness checks self-contained; no undeclared lint package is needed.
+linter:
+  rules:
+    - avoid_empty_else
+    - hash_and_equals
+    - no_duplicate_case_values
+    - unnecessary_statements
+    - unrelated_type_equality_checks
+    - valid_regexps
+
+analyzer:
+  exclude:
+    - build/**
+    - web/**
+    - android/**
+    - ios/**
+    - windows/**
+    - macos/**
+    - linux/**

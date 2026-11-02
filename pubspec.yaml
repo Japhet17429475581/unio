@@ -1,0 +1,85 @@
+name: unio_app
+
+description: Unio — платформа для вузов. Текущая сборка ВГСПУ.
+
+publish_to: "none"
+
+version: 1.0.0-beta.11+12
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  http: ^1.6.0
+  html: ^0.15.6
+  dio: ^5.9.0
+  dio_cookie_manager: ^3.3.0
+  cookie_jar: ^4.0.8
+  workmanager: ^0.10.0
+  url_launcher: ^6.3.2
+  shared_preferences: ^2.3.2
+  flutter_secure_storage: ^11.2.0
+  flutter_local_notifications: ^18.0.1
+  timezone: ^0.9.4
+  flutter_timezone: ^5.1.0
+  image_picker: ^1.2.4
+  file_selector: ^1.1.0
+  path_provider: ^2.1.6
+  crypto: ^3.0.7
+  idb_shim: ^2.9.11
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.6
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+  assets:
+    - pubspec.yaml
+    - assets/icon/icon.png
+    - assets/images/unio_splash_logo.png
+    - assets/templates/
+    - assets/legal/
+
+  fonts:
+    - family: Onest
+      fonts:
+        - asset: assets/fonts/Onest-Regular.ttf
+        - asset: assets/fonts/Onest-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Onest-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Onest-Bold.ttf
+          weight: 700
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
+  adaptive_icon_background: null
+  adaptive_icon_foreground: "assets/icon/icon.png"
+  
+  notification_icon:
+    enabled: true
+    # Ссылка на белый силуэт логотипа на прозрачном фоне:
+    image_path: "assets/icon/push_icon.png"
+
+flutter_native_splash:
+  color: "#101CC7"
+  image: assets/images/unio_splash_logo.png
+
+  android_12:
+    color: "#101CC7"
+    image: assets/images/unio_splash_logo.png
+
+  web: false

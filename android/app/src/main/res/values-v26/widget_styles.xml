@@ -1,0 +1,4 @@
+<resources>
+    <style name="WidgetUnioRegular"><item name="android:fontFamily">@font/unio_regular</item></style>
+    <style name="WidgetUnioSemibold"><item name="android:fontFamily">@font/unio_semibold</item></style>
+</resources>

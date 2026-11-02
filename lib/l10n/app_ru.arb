@@ -1,0 +1,969 @@
+{
+  "@@locale": "ru",
+  "language": "Язык",
+  "languageSaveFailed": "Не удалось сохранить язык. Попробуйте ещё раз.",
+  "uiAcademicProgress": "Успеваемость",
+  "uiPointsGradesAndPassResultsOrganisedBySemester": "Баллы, оценки и зачёты по семестрам — в одном месте.",
+  "uiSignInWithYourUniversityAccountToView": "Войдите с учётной записью университета, чтобы увидеть свою успеваемость.",
+  "uiCouldNotLoadAcademicProgress": "Не удалось загрузить зачётку",
+  "uiTryAgain": "Повторить",
+  "uiCouldNotRetrieveAcademicProgress": "Не удалось получить зачётку",
+  "uiNoDataYet": "Пока нет данных",
+  "uiPullDownToRefresh": "Потяните вниз, чтобы обновить.",
+  "uiVgspuPortal": "Портал ВГСПУ",
+  "uiPointsAbsencesAndSubjectResults": "Баллы, пропуски и результаты по предметам.",
+  "uiNoSemester": "Без семестра",
+  "uiSemester": "{p0} семестр",
+  "@uiSemester": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiEachCheckpointShowsCumulativePointsAndHoursMissed": "В каждом срезе указаны накопленные баллы и пропущенные часы. Значения взяты с портала и не складываются между срезами.",
+  "uiSchedule": "Расписание",
+  "uiUniversity": "Университет",
+  "uiSettings": "Настройки",
+  "uiCouldNotReadTheDocumentsPleaseReopenThis": "Не удалось прочитать документы. Откройте экран ещё раз.",
+  "uiYourChoiceHasBeenSaved": "Выбор сохранён.",
+  "uiAnalyticsIsOffPreviouslySharedDataIsNot": "Аналитика отключена. Ранее переданные данные не удаляются автоматически: unio.support@gmail.com.",
+  "uiTheServerRecordWillBeSentAgainWhen": "{p0} Серверная запись будет повторно отправлена при открытии приложения.",
+  "@uiTheServerRecordWillBeSentAgainWhen": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiCouldNotCompleteTheChangePleaseTryAgain": "Не удалось завершить изменение. Повторите действие.",
+  "uiCouldNotSaveYourChoicePleaseTryAgain": "Не удалось сохранить выбор. Попробуйте ещё раз.",
+  "uiDeleteAccountAndData": "Удалить аккаунт и данные?",
+  "uiThisDeletesYourUnioServerAccountLocalSign": "Будут удалены аккаунт UNIO на сервере, локальные средства входа, заметки и их фотографии, кеши и история согласий. Обработка на основании согласия прекратится.\n\nПри отсутствии сети удаление на сервере останется в очереди. До подтверждения в защищённом хранилище останется только токен для выполнения запроса. Откройте приложение с интернетом до его удаления.\n\nДокументы в ВГСПУ, оригиналы фото, экспортированные файлы, резервные копии сервера и ранее отправленные данные MyTracker не удаляются этой кнопкой. Для обращения: unio.support@gmail.com.",
+  "uiCancel": "Отмена",
+  "uiDelete": "Удалить",
+  "uiDocumentsAndData": "Документы и данные",
+  "uiYourChoices": "Ваш выбор",
+  "uiDataManagement": "Управление данными",
+  "uiAnalyticsIsOptionalDecliningDoesNotLimitUnio": "Аналитика добровольна. Отказ от неё не ограничивает функции UNIO.",
+  "uiIAcceptTheUserAgreement": "Принимаю пользовательское соглашение",
+  "uiIConsentToUnioProcessingMyPersonalData": "Даю согласие на обработку персональных данных UNIO",
+  "uiSeparateConsentThePolicyAndFullTextAre": "Отдельное согласие. Политика и полный текст доступны выше.",
+  "uiMytrackerIsNotUsedInTheWebApp": "MyTracker в веб-версии не используется. Локальные данные хранятся в браузере; очистка данных сайта удалит заметки и вход. Перед очисткой дождитесь подтверждения удаления аккаунта на сервере.",
+  "uiIGiveSeparateConsentToMytracker": "Даю отдельное согласие на MyTracker",
+  "uiOptionalYouCanWithdrawConsentHereAtAny": "Необязательно. Можно отозвать здесь в любой момент.",
+  "uiSaving": "Сохраняем…",
+  "uiContinue": "Продолжить",
+  "uiSignOutWithoutAccepting": "Выйти без принятия",
+  "uiWithdrawConsentAndDeleteData": "Отозвать согласие и удалить данные",
+  "uiNotesAreKeptUntilYouDeleteThemInactive": "Заметки хранятся до удаления вами. Неактивные серверные аккаунты удаляются через 90 дней. Для запросов о данных: unio.support@gmail.com.",
+  "uiCouldNotOpenThisNoteOnYourDevice": "Не удалось открыть заметку на устройстве. Попробуйте ещё раз.",
+  "uiCouldNotSaveTheNoteCheckAvailableStorage": "Не удалось сохранить заметку. Проверьте свободное место и попробуйте ещё раз.",
+  "uiSavedOnThisDevice": "Сохранено на устройстве",
+  "uiCouldNotReadThePhotoChooseAnotherImage": "Не удалось прочитать фото. Выберите другое изображение.",
+  "uiCouldNotOpenPhotosCheckAppPermissionsAnd": "Не удалось открыть фотографии. Проверьте разрешения приложения и попробуйте ещё раз.",
+  "uiDeleteNote": "Удалить заметку?",
+  "uiThisClassNoteAndItsAttachedPhotosWill": "Текст и прикреплённые фото этой пары будут удалены из приложения. Оригиналы в галерее останутся.",
+  "uiNoteDeleted": "Заметка удалена",
+  "uiCouldNotDeleteTheNotePleaseTryAgain": "Не удалось удалить заметку. Попробуйте ещё раз.",
+  "uiSaveChanges": "Сохранить изменения?",
+  "uiThisNoteHasUnsavedChanges": "В заметке есть несохранённые изменения.",
+  "uiKeepEditing": "Продолжить редактирование",
+  "uiDiscardChanges": "Не сохранять",
+  "uiSave": "Сохранить",
+  "uiAddHomework": "Записать ДЗ",
+  "uiFromGallery": "Из галереи",
+  "uiTakeAPhoto": "Снять фото",
+  "uiHomeworkAndNotes": "ДЗ и заметки",
+  "uiDeleteNote59": "Удалить заметку",
+  "uiNoteUnavailable": "Заметка недоступна",
+  "uiClassNote": "Заметка к паре",
+  "uiWhatIsTheAssignmentWriteDownHomeworkOr": "Что задали?\nЗапиши задание или важную мысль…",
+  "uiPhotos": "Фотографии",
+  "uiAddAssignmentPhotosFromYourGalleryOrCamera": "Фото задания можно добавить из галереи или с камеры.",
+  "uiNotesAndPhotosAreStoredOnlyOnThis": "Заметки и фото хранятся только на этом устройстве и доступны без интернета. При удалении приложения или его данных они будут потеряны.",
+  "uiUniversityNews": "Новости университета",
+  "uiCouldNotLoadThisArticle": "Не удалось загрузить новость",
+  "uiArticleNotFound": "Новость не найдена",
+  "uiThisArticleIsNoLongerAvailable": "Материал больше недоступен.",
+  "uiJanuary": "января",
+  "uiFebruary": "февраля",
+  "uiMarch": "марта",
+  "uiApril": "апреля",
+  "uiMay": "мая",
+  "uiJune": "июня",
+  "uiJuly": "июля",
+  "uiAugust": "августа",
+  "uiSeptember": "сентября",
+  "uiOctober": "октября",
+  "uiNovember": "ноября",
+  "uiDecember": "декабря",
+  "uiNews": "Новости",
+  "uiCouldNotLoadNews": "Не удалось загрузить новости",
+  "uiNoNewsYet": "Пока нет новостей",
+  "uiCheckBackALittleLater": "Загляните сюда чуть позже.",
+  "uiUnioNews": "UNIO · Новости",
+  "uiOnCampus": "В университете",
+  "uiUniversityEventsAndAnnouncements": "События и объявления университета",
+  "uiNoDate": "Без даты",
+  "uiToday": "Сегодня",
+  "uiYesterday": "Вчера",
+  "uiLatest": "ПОСЛЕДНЕЕ",
+  "uiOpenTheFullArticleToReadThisStory": "Открой полную статью, чтобы прочитать новость.",
+  "uiVgspuNews": "Новости ВГСПУ",
+  "uiCloseStory": "Закрыть новость",
+  "uiReadFullArticle": "Читать полностью",
+  "uiEnterYourPortalUsernameAndPassword": "Введите логин и пароль от портала {p0}",
+  "@uiEnterYourPortalUsernameAndPassword": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiSignInViaThePortal": "Вход через портал {p0}",
+  "@uiSignInViaThePortal": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiUseYourUniversityPortalUsernameAndPassword": "Используй логин и пароль от портала университета.",
+  "uiPortalUsername": "Логин от портала",
+  "uiPortalPassword": "Пароль от портала",
+  "uiSignIn": "Войти",
+  "uiYourPasswordIsNotSavedInTheBrowser": "Пароль не сохраняется в браузере. Вход остаётся активным после закрытия UNIO.",
+  "uiYourUsernameAndPasswordAreStoredEncryptedOn": "Логин и пароль хранятся зашифрованно на устройстве.",
+  "uiPortalTemporarilyUnavailable": "Портал пока недоступен",
+  "uiCheckYourVgspuPortalAccount": "Проверьте личный кабинет ВГСПУ",
+  "uiCouldNotLoadApplications": "Не удалось загрузить заявления",
+  "uiApplicationStatusEditingIsCurrentlyUnavailable": "Статус заявления: {p0}. Заполнение сейчас недоступно.",
+  "@uiApplicationStatusEditingIsCurrentlyUnavailable": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiApplicationCreatedThePortalIsPreparingTheForm": "Заявление создано. Подождите немного — портал готовит форму. Обновите список чуть позже.",
+  "uiCertificatesAndApplications": "Справки и заявления",
+  "uiRefreshStatuses": "Обновить статусы",
+  "uiCreatingApplication": "Создаём заявление…",
+  "uiSubmitAnApplication": "Подать заявление",
+  "uiMyApplications": "Мои заявления",
+  "uiCheckedAtPullDownToRefresh": "Проверено в {p0} · потяните вниз, чтобы обновить",
+  "@uiCheckedAtPullDownToRefresh": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiCouldNotRefreshStatusesShowingPreviousData": "Не удалось обновить статусы. Показаны предыдущие данные.\n{p0}",
+  "@uiCouldNotRefreshStatusesShowingPreviousData": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiNoApplicationsYet": "Заявлений пока нет",
+  "uiChooseTheDocumentYouNeedUsingTheButton": "Выберите нужный документ кнопкой ниже.",
+  "uiNewApplication": "Новое заявление",
+  "uiWhichDocumentDoYouNeed": "Какой документ нужен?",
+  "uiChooseACategoryAndApplicationTypeFromThe": "Выберите категорию и вид заявления из списка университета.",
+  "uiCategory": "Категория",
+  "uiRetryLoading": "Повторить загрузку",
+  "uiNoApplicationsAvailableInThisCategory": "В этой категории нет доступных заявлений.",
+  "uiApplicationType": "Вид заявления",
+  "uiCreateApplication": "Создать заявление",
+  "uiADraftWillBeCreatedOnThePortal": "На портале будет создан черновик. На обработку вы отправите его после проверки данных.",
+  "uiComingSoon": "Скоро здесь",
+  "uiThisSectionIsStillBeingDeveloped": "Раздел ещё дорабатывается.",
+  "uiCouldNotOpenTheBrowser": "Не удалось открыть браузер.",
+  "uiTemplateSavedFillItOutInADocument": "Шаблон сохранён. Заполните его в редакторе документов и прикрепите к заявлению.",
+  "uiCouldNotSaveTheTemplateTryAgainAnd": "Не удалось сохранить шаблон. Попробуйте ещё раз и выберите доступную папку.",
+  "uiApplication": "Заявление",
+  "uiChooseAFileInOneOfTheListed": "Выберите файл в одном из указанных форматов.",
+  "uiChooseAFileUpToMb": "Выберите файл размером до 20 МБ.",
+  "uiTheSelectedFileIsEmpty": "Выбран пустой файл.",
+  "uiCouldNotReadTheFilePleaseSelectIt": "Не удалось прочитать файл. Попробуйте выбрать его ещё раз.",
+  "uiAttachYourApplication": "Прикрепите заявление",
+  "uiFileAlreadyUploadedToThePortal": "Файл уже загружен на портал",
+  "uiAttachADocumentConfirmingYourSelectedCategory": "Прикрепите документ, подтверждающий выбранную категорию.",
+  "uiFillOutTheTemplateAndAttachYourApplication": "Заполните шаблон и прикрепите файл заявления.",
+  "uiUpToMb": "{p0} · до 20 МБ",
+  "@uiUpToMb": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiChooseFile": "Выбрать файл",
+  "uiReplaceFile": "Заменить файл",
+  "uiTheFileWillBeUploadedWhenYouSubmit": "Файл будет загружен на портал при отправке заявления.",
+  "uiRemoveSelectedFile": "Убрать выбранный файл",
+  "uiSubmitApplication": "Отправить заявление?",
+  "uiCheckYourDetailsAndAttachmentsYourApplicationWill": "Проверьте заполненные данные и вложения. Заявление поступит на обработку в университет.",
+  "uiReviewAgain": "Проверить ещё раз",
+  "uiSubmit": "Отправить",
+  "uiSubmissionCouldNotBeConfirmedCheckTheApplication": "Не удалось подтвердить отправку. Проверьте статус в списке заявлений перед повторной попыткой — портал мог уже получить данные.",
+  "uiEmailAddress": "Электронная почта",
+  "uiPostalAddress": "Почтовый адрес",
+  "uiStartOfPeriod": "Начало периода",
+  "uiEndOfPeriod": "Конец периода",
+  "uiNumberOfCopies": "Количество справок",
+  "uiDdMmYyyy": "ДД.ММ.ГГГГ",
+  "uiChooseDate": "Выбрать дату",
+  "uiPleaseConfirmYourConsent": "Подтвердите согласие",
+  "uiApplication160": "Заявление №{p0}",
+  "@uiApplication160": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiFormNotAvailableYet": "Форма пока недоступна",
+  "uiCouldNotOpenApplication": "Не удалось открыть заявление",
+  "uiBackToApplications": "К списку заявлений",
+  "uiFillInYourDetails": "Заполните данные",
+  "uiApplicationOnThePortal": "Заявление на портале",
+  "uiFieldsMarkedWithAnAsteriskAreRequiredYou": "Поля со звёздочкой обязательны. Перед отправкой вы сможете проверить данные.",
+  "uiThisApplicationCannotBeEditedItsCurrentStatus": "Редактирование этой заявки недоступно. Актуальный статус указан в списке заявлений.",
+  "uiSaving168": "Сохранение…",
+  "uiDownloadWordTemplate": "Скачать шаблон Word",
+  "uiOpenTemplateOnThePortal": "Открыть шаблон на портале",
+  "uiSomeAttachmentsOrFieldsInThisFormAre": "Эта форма содержит вложения или поля, которые пока доступны только на портале. Продолжите заполнение в браузере.",
+  "uiSubmitForProcessing": "Отправить на обработку",
+  "uiCheckApplicationStatus": "Проверить статус заявления",
+  "uiOpenOnTheVgspuPortal": "Открыть на портале ВГСПУ",
+  "uiClassPhotosRecoveredAndSaved": "Фотографии к паре восстановлены и сохранены",
+  "uiCouldNotRecoverTheSelectedPhotosOpenThe": "Не удалось восстановить выбранные фото. Откройте заметку и добавьте их ещё раз.",
+  "uiNextWeek": "Следующая неделя",
+  "uiThisWeek": "Эта неделя",
+  "uiCouldNotLoadSchedule": "Не удалось загрузить расписание",
+  "uiCheckYourInternetConnectionAndTryAgain": "Проверьте подключение к интернету и попробуйте ещё раз",
+  "uiNoScheduleFoundForThisWeek": "На выбранную неделю расписание не найдено",
+  "uiEndGuestSession": "Завершить гостевой сеанс",
+  "uiSignOut": "Выйти из аккаунта",
+  "uiYouWillNeedToChooseAGroupAgain": "Для нового гостевого сеанса потребуется снова выбрать группу.",
+  "uiYouWillNeedToSignInAgainTo": "Для доступа к аккаунту потребуется войти снова.",
+  "uiEndSession": "Завершить",
+  "uiSignOut187": "Выйти",
+  "uiAccountAndAppPreferences": "Аккаунт и параметры приложения",
+  "uiTeacher": "Преподаватель",
+  "uiPersonalAccount": "Личный аккаунт",
+  "uiGroup": "Группа {p0}",
+  "@uiGroup": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiPortal": "Портал {p0}",
+  "@uiPortal": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiGuestAccess": "Гостевой доступ",
+  "uiScheduleForGroup": "Расписание группы {p0}",
+  "@uiScheduleForGroup": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiChangeGroup": "Сменить группу",
+  "uiSignInToThePortalAgain": "Повторить вход через портал",
+  "uiSignInViaThePortal198": "Войти через портал {p0}",
+  "@uiSignInViaThePortal198": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiPreferences": "Параметры",
+  "uiDarkTheme": "Тёмная тема",
+  "uiPushNotifications": "Пуш-уведомления",
+  "uiNotificationsAreCurrentlyUnavailableOnIphoneAddUnio": "Уведомления пока недоступны. На iPhone добавьте UNIO на главный экран.",
+  "uiScheduleWidget": "Виджет расписания",
+  "uiYourNextClassOnTheHomeScreen": "Ближайшая пара на рабочем столе",
+  "uiPrivacy": "Конфиденциальность",
+  "uiConsentAnalyticsAndDeletion": "Согласия, аналитика и удаление",
+  "uiInstallUnio": "Установить UNIO",
+  "uiAddToHomeScreenWebBeta": "На главный экран · веб-бета",
+  "uiNotesAreStoredInThisBrowserClearingSite": "Заметки хранятся в этом браузере. Очистка данных сайта удаляет их. Пароль портала в веб-версии не сохраняется.",
+  "uiSigningOut": "Выход…",
+  "uiUnioVersion": "UNIO · Версия {p0}",
+  "@uiUnioVersion": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiCouldNotSignOutPleaseTryAgain": "Не удалось выйти. Попробуйте ещё раз.",
+  "uiClass": "Занятие",
+  "uiClassDetailsAndTeachingTools": "Детали занятия и инструменты преподавателя.",
+  "uiRoomNotSpecified": "Аудитория не указана",
+  "uiRoom": "Аудитория {p0}",
+  "@uiRoom": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiFindAnAvailableRoom": "Найти свободную аудиторию",
+  "uiBackToSchedule": "К расписанию",
+  "uiAvailableRooms": "Свободные аудитории",
+  "uiCouldNotFindRooms": "Не удалось найти аудитории",
+  "uiForTeachers": "Для преподавателя",
+  "uiARoomForYourClass": "Место для пары",
+  "uiNoAvailableRoomsFoundInTheKnownSchedules": "По известным расписаниям свободных аудиторий не найдено.",
+  "uiRoom224": "Ауд. {p0}",
+  "@uiRoom224": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiTodaySSchedule": "Сегодня по расписанию",
+  "uiPartOfTheScheduleIsUnavailableShowingKnown": "Часть расписания недоступна. Показаны известные занятия.",
+  "uiNow": "Сейчас · {p0}–{p1}",
+  "@uiNow": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
+  "uiCouldNotDetermineWhetherThereIsAClass": "Не удалось определить, есть ли занятие сейчас.",
+  "uiNoClassesScheduledRightNow": "Сейчас занятий по расписанию нет.",
+  "uiNext": "Следующая · {p0}",
+  "@uiNext": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiTimesForUpcomingClassesAreNotSpecified": "Время следующих занятий не указано.",
+  "uiNoMoreClassesToday": "Следующих занятий сегодня нет.",
+  "uiTheScheduleShowsPlannedClassesNotAPerson": "Расписание показывает запланированные занятия, а не фактическое присутствие в вузе.",
+  "uiSavedDataNotConfirmedWithTheServer": "Есть сохранённые данные · без актуального подтверждения с сервера",
+  "uiTodaySScheduleHasNotLoadedRefreshTo": "Расписание на сегодня не загружено. Обновите экран, чтобы повторить.",
+  "uiRefreshSchedule": "Обновить расписание",
+  "uiClassesAndRoomsFromTheUniversitySchedule": "Занятия и аудитории по расписанию университета.",
+  "uiClassSchedule": "Расписание занятий",
+  "uiPreviousDay": "Предыдущий день",
+  "uiToday240": "Сегодня · {p0}",
+  "@uiToday240": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiNextDay": "Следующий день",
+  "uiBackToToday": "Вернуться к сегодня",
+  "uiCouldNotLoadClasses": "Не удалось загрузить занятия",
+  "uiTheScheduleHasNotLoadedCompletely": "Расписание загружено не полностью.",
+  "uiShowingSavedSchedule": "Показано сохранённое расписание.",
+  "uiNoKnownClassesForThisDayTheFull": "Известных занятий на этот день нет. Полное расписание пока недоступно.",
+  "uiViewClassesAndRooms": "Посмотреть занятия и аудитории",
+  "uiFindATeacher": "Найти преподавателя",
+  "uiRefreshDirectory": "Обновить справочник",
+  "uiSurnameOrPartOfAName": "Фамилия или часть ФИО",
+  "uiClearSearch": "Очистить поиск",
+  "uiSearchingTheSavedDirectory": "Поиск по сохранённому справочнику",
+  "uiDirectoryCurrentlyUnavailable": "Справочник пока недоступен",
+  "uiRecentlyViewed": "Недавно смотрели",
+  "uiClear": "Очистить",
+  "uiWhoAreYouLookingFor": "Кого ищем?",
+  "uiEnterAtLeastTwoLettersOfASurname": "Введите хотя бы две буквы фамилии. Полное ФИО знать не обязательно.",
+  "uiNoMatches": "Совпадений нет",
+  "uiCheckTheSurnameOrTryFewerLetters": "Проверьте фамилию или попробуйте ввести меньше букв.",
+  "uiChooseATeacher": "Выберите преподавателя",
+  "uiMoreMatchesAvailableRefineTheSurname": "Есть ещё совпадения — уточните фамилию.",
+  "uiUniversityEventsAnnouncementsAndCampusLife": "События, объявления и жизнь университета",
+  "uiCertificatesFormsAndPortalResponses": "Справки, формы и ответы портала",
+  "uiTeachers": "Преподаватели",
+  "uiSearchBySurnameClassesAndRooms": "Поиск по фамилии, занятия и аудитории",
+  "uiUnioUniversity": "UNIO · Университет",
+  "uiForYourStudies": "Всё для учёбы",
+  "uiNewsApplicationsAndTeacherSearchInOnePlace": "Новости, заявления и поиск преподавателей — в одном месте.",
+  "uiApplications": "Заявления",
+  "uiUseYourUniversityAccountYourApplicationsWillAppear": "Используйте учётную запись университета. После входа откроется список заявлений.",
+  "uiBack": "Назад",
+  "uiSkip": "Пропустить",
+  "uiPageOf": "Страница {p0} из {p1}",
+  "@uiPageOf": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
+  "uiPage": "Страница {p0}",
+  "@uiPage": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiGetStarted": "Начать",
+  "uiNext276": "Дальше",
+  "uiLetSGetAcquainted": "ДАВАЙ ЗНАКОМИТЬСЯ",
+  "uiChooseYourRole": "Выбери\nсвою роль",
+  "uiStudentsAndTeachersHaveAccessToDifferentSections": "Для студентов и преподавателей доступны разные разделы.",
+  "uiDoYouStudyOrTeach": "Ты учишься или преподаёшь?",
+  "uiIMAStudent": "Я студент",
+  "uiClassesGradesAndApplications": "Пары, зачётка и заявления",
+  "uiIMATeacher": "Я преподаватель",
+  "uiScheduleAndAvailableRooms": "Расписание и свободные аудитории",
+  "uiYouCanChangeYourRoleBySigningOut": "Можно сменить роль, выйдя из аккаунта.",
+  "uiForStudents": "СТУДЕНТАМ",
+  "uiHowWouldYouLikeToSignIn": "Как хочешь\nвойти?",
+  "uiConnectYourPortalAccountOrStartWithYour": "Подключи портал или начни с расписания своей группы.",
+  "uiWhatWorksForYou": "Как тебе удобнее?",
+  "uiScheduleGradesAndApplications": "Расписание, зачётка, заявления",
+  "uiContinueAsAGuest": "Продолжить как гость",
+  "uiStartWithYourGroupCodeYouCanConnect": "Начни с номера группы. Портал можно подключить позже.",
+  "uiWelcomeToUnio": "ПРИВЕТ, ЭТО UNIO",
+  "uiHiThisIsUnio": "Привет! Это UNIO.",
+  "uiAnAppForYourStudies": "Приложение для учёбы.",
+  "uiViewYourScheduleSaveAssignmentsAndRequestCertificates": "Здесь можно смотреть расписание, записывать задания и заказывать справки.",
+  "uiSchedule297": "РАСПИСАНИЕ",
+  "uiYourClassSchedule": "Расписание занятий.",
+  "uiForTodayAndTheWeek": "На сегодня и неделю.",
+  "uiChooseADayToViewClassesTimesAnd": "Выбери день и посмотри пары, время и аудитории. Сохранённое расписание работает без интернета.",
+  "uiCertificatesAndApplications301": "СПРАВКИ И ЗАЯВЛЕНИЯ",
+  "uiNeedACertificate": "Нужна справка?",
+  "uiRequestItInTheApp": "Закажи в приложении.",
+  "uiRequestCertificatesViaThePortalTrackTheirStatus": "Заказывай справки через портал, следи за статусом и получай уведомления о готовности.",
+  "uiMoreFeatures": "ДРУГИЕ РАЗДЕЛЫ",
+  "uiNewsAndTeachers": "Новости и преподаватели.",
+  "uiHomeworkAndNotes307": "Задания и заметки.",
+  "uiFindTeachersAndTheirClassesReadUniversityNews": "Ищи преподавателей и их занятия, читай новости вуза и оставляй заметки к своим парам.",
+  "uiEnterYourFullNameCharacters": "Введите ФИО (от 3 до 255 символов)",
+  "uiEnterYourVgspuPortalUsernameAndPassword": "Введите логин и пароль от портала ВГСПУ",
+  "uiEnterYourGroupUsernameAndPassword": "Заполните группу, логин и пароль",
+  "uiEnterYourGroupCode": "Введите номер группы",
+  "uiCouldNotSignInCheckYourConnectionAnd": "Не удалось войти. Проверьте соединение и попробуйте ещё раз.",
+  "uiForTeachers314": "ПРЕПОДАВАТЕЛЯМ",
+  "uiYourAccount": "ЛИЧНЫЙ КАБИНЕТ",
+  "uiQuickStart": "БЫСТРЫЙ СТАРТ",
+  "uiTeacherSchedule": "Расписание\nпреподавателя",
+  "uiSignInViaThePortal318": "Вход\nчерез портал",
+  "uiChooseYourGroup": "Укажи\nсвою группу",
+  "uiSignInWithYourVgspuPortalAccountYour": "Войди с аккаунтом портала ВГСПУ. ФИО нужно, чтобы найти твоё расписание.",
+  "uiUseYourPortalUsernameAndPassword": "Используй свой логин и пароль от портала {p0}.",
+  "@uiUseYourPortalUsernameAndPassword": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiChooseAGroupAndPlanYourDayNo": "Выбери группу — и можно планировать день. Пароль университета не нужен.",
+  "uiEnterYourGroupCodeAndPlanYourDay": "Укажи номер группы — и можно планировать день. Подключить портал получится позже.",
+  "uiTeacherSignIn": "Вход преподавателя",
+  "uiFullName": "Фамилия, имя и отчество",
+  "uiShowPassword": "Показать пароль",
+  "uiHidePassword": "Скрыть пароль",
+  "uiYourUsernameAndPasswordAreStoredSecurelyOn": "Логин и пароль сохраняются защищённо на этом устройстве.",
+  "uiNoPortalUsernameOrPasswordNeeded": "Без логина и пароля от портала.",
+  "uiToday330": "СЕГОДНЯ",
+  "uiToday331": "· Сегодня",
+  "uiNoClasses": "Пар нет",
+  "uiNoClassesTakeABreak": "Пар нет — можно выдохнуть",
+  "uiChooseAnotherDayToViewItsSchedule": "Выберите другой день, чтобы посмотреть расписание.",
+  "uiGroupListCurrentlyUnavailable": "Список групп пока недоступен",
+  "uiCouldNotCheckTheGroupListPleaseTry": "Не удалось проверить список групп. Попробуйте ещё раз.",
+  "uiGroupCode": "Номер группы",
+  "uiStartTypingAGroupCodeOrNumber": "Начните вводить код или номер",
+  "uiLoadingGroups": "Загружаем группы…",
+  "uiTryAgain340": "{p0}. Повторить",
+  "@uiTryAgain340": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiGroupNotFoundCheckTheCodeOrEnter": "Группа не найдена. Проверьте код или введите только номер.",
+  "uiHowToViewYourSchedule": "Как смотреть\nрасписание",
+  "uiChooseADayOnTheScheduleTimesAre": "Выбирай день в карточке расписания. Время — слева, рядом — предмет и аудитория. Нажми на пару, чтобы открыть её.",
+  "uiHowToSwitchWeeks": "Как сменить\nнеделю",
+  "uiSwipeLeftForNextWeekAndRightFor": "Свайп влево открывает следующую неделю, вправо — возвращает текущую. Кнопка над расписанием делает то же самое. Сохранённые пары доступны без сети.",
+  "uiHowToAddHomework": "Как записать ДЗ",
+  "uiOpenAClassWriteDownHomeworkOrAn": "Открой пару, запиши домашнее задание или важную мысль и нажми «Сохранить». Запись привязана к этому занятию.",
+  "uiHowToAddPhotos": "Как добавить фото",
+  "uiScrollTheActionBarToAddPhotosFrom": "Листай панель действий, чтобы добавить фото из галереи или с камеры. Заметки и фотографии хранятся на устройстве: удаление приложения удалит и их.",
+  "uiHowToRequestACertificate": "Как заказать справку",
+  "uiOpenUniversitySubmitAnApplicationAndSignIn": "Открой «Университет» → «Подать заявление» и войди через портал. Выбери документ. Пока статус «Новое», портал ещё готовит форму.",
+  "uiFillingOutAnApplication": "Заполнение заявления",
+  "uiWhenOpenFormAppearsOpenTheApplicationAfter": "Когда появится «Перейти к заполнению», открой форму. После отправки проверяй статус здесь. Пуш-уведомления можно включить в настройках; проверка бывает с задержкой.",
+  "uiRooms": "Аудитории",
+  "uiFindARoom": "Поиск аудитории",
+  "uiOpenAClassAndSelectFindAnAvailable": "Открой занятие и выбери «Найти свободную аудиторию» в панели действий. Поиск использует дату и время этой пары.",
+  "uiWhatTheSearchShows": "Что показывает поиск",
+  "uiUnioOnlyChecksTheSchedulesItKnowsA": "UNIO проверяет только известные ему расписания. Найденная аудитория не забронирована: перед занятием уточни, свободна ли она на самом деле.",
+  "uiTeacherSearch": "Поиск преподавателя",
+  "uiOpenTeachersInTheUniversityTabEnterAt": "Во вкладке «Университет» открой «Преподаватели». Введи хотя бы две буквы фамилии и выбери нужное полное имя.",
+  "uiClassesAndRooms": "Занятия и аудитории",
+  "uiATeacherSCardShowsClassesAndRooms": "В карточке преподавателя есть занятия и аудитории. Это план, а не отслеживание человека: расписание не подтверждает его присутствие в вузе.",
+  "uiGettingStarted": "Первое знакомство",
+  "uiCloseGuide": "Закрыть гайд",
+  "uiAppGuide": "ГАЙД ПО ПРИЛОЖЕНИЮ",
+  "uiGotIt": "Понятно",
+  "uiExample": "ПРИМЕР · {p0}",
+  "@uiExample": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiMon": "ПН",
+  "uiTue": "ВТ",
+  "uiWed": "СР",
+  "uiThu": "ЧТ",
+  "uiFri": "ПТ",
+  "uiForeignLanguage": "10:10 · Иностранный язык",
+  "uiRoom374": "Аудитория 314",
+  "uiPedagogy": "11:50 · Педагогика",
+  "uiRoom376": "Аудитория 208",
+  "uiSwipeLeft": "Свайп влево",
+  "uiReadChapter": "Прочитать главу 3",
+  "uiAssignmentForTheNextClass": "Задание к следующей паре",
+  "uiNew": "Новое",
+  "uiThePortalIsPreparingTheForm": "Портал готовит форму",
+  "uiOpenForm": "Перейти к заполнению",
+  "uiYouCanOpenTheApplication": "Можно открыть заявление",
+  "uiUniversityResponse": "Ответ университета",
+  "uiTheStatusWillAppearInTheList": "Статус появится в списке",
+  "uiSelectedClassTime": "Время выбранного занятия",
+  "uiBasedOnKnownSchedules": "По известным расписаниям",
+  "uiSearchBySurname": "Поиск по фамилии",
+  "uiChooseTheFullName": "Выбери полное имя",
+  "uiTeacherDetails": "Карточка преподавателя",
+  "uiTodayAndOtherDays": "Сегодня и другие дни",
+  "uiRoomAndTime": "Аудитория и время",
+  "uiFromTheClassSchedule": "По плану занятий",
+  "uiConfirmInTheAndroidDialogTheWidgetWill": "Подтверди добавление в окне Android. Виджет появится на рабочем столе.",
+  "uiTouchAndHoldAnEmptyAreaOnYour": "Зажми пустое место на рабочем столе → «Виджеты» → UNIO.",
+  "uiYourScheduleAtHand": "Расписание под рукой",
+  "uiYourNextClassAndRoomRightOnYour": "Ближайшая пара и аудитория — прямо на рабочем столе.",
+  "uiNextClassToday": "СЛЕДУЮЩАЯ ПАРА · СЕГОДНЯ",
+  "uiForeignLanguage399": "Иностранный язык",
+  "uiPracticalRoom": "Практика · Ауд. 0439",
+  "uiYourDayYourPace": "Твой день — в твоём ритме",
+  "uiDesignPreviewTheWidgetWillShowYourSelected": "Пример оформления. Виджет покажет выбранное расписание и будет открывать UNIO по нажатию.",
+  "uiAddToHomeScreen": "Добавить на рабочий стол",
+  "uiRoom404": "  •  Ауд. {p0}",
+  "@uiRoom404": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiGroup405": "Группа: {p0}",
+  "@uiGroup405": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiLoadingTodaySClasses": "Загружаем пары на сегодня…",
+  "uiTodaySScheduleHasNotLoaded": "Расписание на сегодня не загружено",
+  "uiTapToTryAgain": "Нажмите, чтобы повторить",
+  "uiNoScheduleFoundForThisWeek409": "Расписание на эту неделю не найдено",
+  "uiTapToRefresh": "Нажмите, чтобы обновить",
+  "uiTimesForUpcomingClassesAreNotSpecified411": "Время следующих пар не указано",
+  "uiNoMoreClassesToday412": "Следующих пар сегодня нет",
+  "uiNoClassesTodayEnjoyYourBreak": "Сегодня без пар — отдыхай ☕",
+  "uiNextClassTodayGoToThisClassIn": "Следующая пара сегодня: {p0}, {p1}–{p2}{p3}. Перейти к паре в расписании.",
+  "@uiNextClassTodayGoToThisClassIn": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      },
+      "p2": {
+        "type": "String"
+      },
+      "p3": {
+        "type": "String"
+      }
+    }
+  },
+  "uiNextClassToday415": "Следующая пара · сегодня",
+  "uiStartsIn": "До начала",
+  "uiYourDay": "Твой день",
+  "uiTheScheduleForOtherDaysIsBelow": "Расписание на другие дни — ниже.",
+  "uiClassPhotos": "Фото к паре",
+  "uiPreviousPhoto": "Предыдущее фото",
+  "uiNextPhoto": "Следующее фото",
+  "uiCouldNotOpenPhoto": "Не удалось открыть фотографию",
+  "uiPhoto": "Фото {p0}",
+  "@uiPhoto": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiRemovePhoto": "Убрать фото",
+  "uiUniversityServices": "Сервисы университета",
+  "uiViaThePortalRightInUnio": "{p0} через портал {p1} — прямо в UNIO.",
+  "@uiViaThePortalRightInUnio": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
+  "uiPortalSignInRequired": "Нужен вход через портал",
+  "uiUseYourUniversityAccountToOpenThisSection": "Используйте учётную запись университета, чтобы открыть этот раздел.",
+  "uiAvailableAfterSigningInViaThePortalGuest": "Доступно после входа через портал {p0} — в гостевом режиме доступно только расписание",
+  "@uiAvailableAfterSigningInViaThePortalGuest": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiUnioOnYourHomeScreen": "UNIO на главном экране",
+  "uiOnIphoneOpenUnioInSafariTapShare": "На iPhone: откройте UNIO в Safari, нажмите «Поделиться» → «На экран Домой». Если есть переключатель «Открывать как веб-приложение», включите его.\n\nНа Android и компьютере: откройте меню браузера и выберите «Установить приложение» или «Добавить на главный экран».\n\nПосле первой загрузки доступны сохранённые расписания и заметки. Для новых данных нужен интернет. Очистка данных сайта удаляет локальные заметки и вход.",
+  "uiThePortalIsPreparingYourForm": "Портал готовит форму для заполнения",
+  "uiSubjects": "Предметы",
+  "uiSemester445": "Семестр {p0}",
+  "@uiSemester445": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiNoResultYet": "Результат пока не указан",
+  "uiPts": "{p0} б.",
+  "@uiPts": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiCheckpointsAndAbsences": "Срезы и пропуски",
+  "uiCheckpoint": "{p0} срез",
+  "@uiCheckpoint": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiMissedH": "Пропуски: {p0} ч.",
+  "@uiMissedH": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "uiLoading": "Загрузка",
+  "uiRefreshing": "Обновление",
+  "uiSat": "СБ",
+  "uiSun": "ВС",
+  "uiPullDownToRefreshTheSchedule": "Потяните вниз, чтобы обновить расписание.",
+  "uiClassesForTheWeek": "Пары на неделю",
+  "uiAlwaysNearby": "Всегда рядом",
+  "uiForYourStudies470": "Для учёбы",
+  "uiYourDay471": "ТВОЙ ДЕНЬ",
+  "uiPedagogy472": "Педагогика",
+  "uiEvenOffline": "Даже без сети",
+  "uiEnrolmentCertificate": "Справка об обучении",
+  "uiApplicationSubmitted": "Заявление отправлено",
+  "uiSubmittedInProgressReady": "Отправлено → В работе → Готово",
+  "uiCertificateReady": "Справка готова",
+  "uiReadyToCollect": "Можно забирать",
+  "uiTeacherClassSchedule": "Преподаватель\nРасписание занятий",
+  "uiNextClassRoom": "Следующая пара · ауд. 314",
+  "uiEssentialsAtHand": "Важное — под рукой",
+  "uiClassNotes": "Заметки к занятиям",
+  "uiTheServerHasConfirmedDeletionAndSignOut": "Запросы удаления и выхода подтверждены сервером.",
+  "uiTheServerRequestIsStillWaitingForA": "Запрос к серверу ещё ожидает сети. Не удаляйте приложение до подтверждения.",
+  "uiPleaseAcceptTheDocumentsToSignInAnalytics": "Для входа нужно принять документы. Аналитика необязательна.",
+  "uiCleanupIsIncompleteWeWillRetryOnThe": "Очистка не завершена. Повторим при следующем запуске. Не удаляйте приложение до подтверждения.",
+  "uiYouAreSignedOutTheServerRequestIs": "Вы вышли. Запрос на сервер ожидает сети — откройте приложение с интернетом.",
+  "uiYourUnioAccountAndLocalDataHaveBeen": "Аккаунт UNIO и локальные данные удалены.",
+  "uiYouHaveSignedOut": "Вы вышли из аккаунта.",
+  "uiMonday": "Понедельник",
+  "uiTuesday": "Вторник",
+  "uiWednesday": "Среда",
+  "uiThursday": "Четверг",
+  "uiFriday": "Пятница",
+  "uiSaturday": "Суббота",
+  "uiSunday": "Воскресенье",
+  "uiClass497": "пара",
+  "uiClasses": "пары",
+  "uiClasses499": "пар",
+  "uiCouldNotConnectCheckYourInternetConnectionAnd": "Не удалось подключиться. Проверьте интернет и попробуйте ещё раз.",
+  "uiTheServiceIsTemporarilyUnavailablePleaseTryAgain": "Сервис временно недоступен. Попробуйте чуть позже.",
+  "uiCouldNotCompleteThisActionPleaseTryAgain": "Не удалось выполнить действие. Попробуйте ещё раз.",
+  "uiSignInAgainAndRetryThisAction": "Войдите в аккаунт заново и повторите действие.",
+  "uiThisActionIsCurrentlyUnavailableForYourAccount": "Это действие сейчас недоступно для вашего аккаунта.",
+  "uiCouldNotFindTheRequestedDataTryRefreshing": "Не удалось найти запрошенные данные. Попробуйте обновить экран.",
+  "uiCheckYourDetailsAndTryAgain": "Проверьте заполненные данные и попробуйте ещё раз.",
+  "uiTheResponseIsTakingLongerThanExpectedPlease": "Ответ задерживается. Попробуйте ещё раз чуть позже.",
+  "uiTooManyAttemptsPleaseWaitALittleAnd": "Слишком много попыток. Подождите немного и повторите.",
+  "uiThePortalHasRestrictedAccessTryAnotherNetwork": "Портал ограничил доступ. Попробуйте другую сеть или откройте портал в браузере. Код REQ_ACCESS.",
+  "uiCouldNotLoadTheListTryRefreshingIt": "Не удалось загрузить список. Попробуйте обновить его позже. Код REQ_EMPTY.",
+  "uiOpenYourVgspuPortalAccountAnActionMay": "Откройте личный кабинет ВГСПУ: возможно, там требуется действие. Если раздел заявлений доступен, сообщите поддержке код REQ_PAGE.",
+  "uiCouldNotOpenThePageSecurelyPleaseTry": "Не удалось безопасно открыть страницу. Попробуйте позже.",
+  "storyViewed": "Просмотрено",
+  "open": "Открыть",
+  "draft": "Проект",
+  "accepted": "Принято",
+  "withdrawn": "Отозвано",
+  "waitingForForm": "Подождите ещё немного — получаем информацию от портала. Когда форма будет готова, появится «Перейти к заполнению». Обновите список чуть позже.",
+  "noStatus": "Статус не указан",
+  "lecture": "Лекция",
+  "practice": "Практика",
+  "lab": "Лабораторная",
+  "seminar": "Семинар",
+  "consultation": "Консультация",
+  "exam": "Экзамен",
+  "credit": "Зачёт",
+  "documentsOriginalLanguage": "Документы опубликованы на русском языке. Выбор языка интерфейса не меняет их текст.",
+  "notesSignIn": "Войдите в студенческий аккаунт, чтобы открыть заметки.",
+  "notesNoDate": "У этой пары не указана дата. Обновите расписание.",
+  "notesWrongOwner": "Заметка относится к другому аккаунту.",
+  "notesReadFailed": "Не удалось прочитать сохранённую заметку.",
+  "notesPhotosFailed": "Не удалось прочитать фотографии заметки.",
+  "photoTooLarge": "Фото слишком большое. Выберите изображение до 10 МБ.",
+  "photoAddFailed": "Не удалось добавить фото. Максимальный размер — 10 МБ.",
+  "notesTextLimit": "Можно сохранить до 20 000 символов.",
+  "photoReadFailed": "Не удалось прочитать фотографию.",
+  "photoUnavailable": "Фотография недоступна. Добавьте её ещё раз.",
+  "photosRecoveryFailed": "Не удалось восстановить выбранные фото. Добавьте их ещё раз.",
+  "portalCheckCredentials": "Проверьте логин и пароль портала ВГСПУ.",
+  "portalReauthenticate": "Портал ВГСПУ завершил авторизацию. Повторите вход через портал в настройках UNIO.",
+  "webSignInEnded": "Вход в веб-версию завершён. Войдите через портал повторно.",
+  "webConfigMissing": "Веб-доступ к порталу ещё не настроен. Сообщите поддержке код WEB_CONFIG.",
+  "attachmentLimit": "Выберите вложение размером до 20 МБ.",
+  "chooseSuggestedGroup": "Выберите группу из подсказок.",
+  "tooManyRequests": "Слишком много запросов. Попробуйте немного позже.",
+  "portalConnectionFailed": "Не удалось связаться с порталом. Попробуйте ещё раз.",
+  "checkInternet": "Не удалось подключиться. Проверьте интернет.",
+  "refreshSignInFailed": "Не удалось обновить вход. Повторите действие.",
+  "portalOtherSite": "Портал предложил переход на другой сайт.",
+  "portalNoRedirect": "Портал не вернул адрес перехода.",
+  "portalUploadRedirect": "Портал перенаправил загрузку файла. Обновите заявление и проверьте вложение.",
+  "portalTooManyRedirects": "Слишком много перенаправлений портала.",
+  "operationSignIn": "Вход в портал",
+  "operationDraft": "Создание черновика",
+  "operationTypes": "Загрузка видов заявлений",
+  "operationRequests": "Загрузка списка заявлений",
+  "operationSubmit": "Отправка заявления",
+  "operationForm": "Открытие формы",
+  "operationPortal": "Загрузка страницы портала",
+  "portalCsrfRejected": "портал не принял защитный токен формы",
+  "portalNeedsSignIn": "портал требует повторного входа",
+  "portalDenied": "портал отказал в доступе",
+  "portalNoResponse": "ответ не получен; проверьте соединение",
+  "portalError": "портал вернул ошибку",
+  "portalSessionExpired": "Сессия портала истекла. Войдите через портал заново.",
+  "portalSignInFailed": "Не удалось войти в портал. Проверьте логин и пароль; возможно, портал требует дополнительного подтверждения.",
+  "portalSignInRequired": "Войдите через портал ВГСПУ, чтобы продолжить.",
+  "tooManyRequestPages": "Слишком много страниц заявлений. Откройте портал для полного списка.",
+  "typesNotReturned": "Портал не вернул типы заявлений. Попробуйте войти заново.",
+  "typesLoadFailed": "Не удалось загрузить типы заявлений.",
+  "invalidRequestId": "Некорректный номер заявления.",
+  "formNotFillable": "Заполнение сейчас недоступно. Вернитесь к списку и обновите статус заявления.",
+  "typeNoLongerAvailable": "Этот тип заявления больше недоступен. Выберите другой.",
+  "draftNotConfirmed": "Портал не подтвердил создание. Обновите список перед повторной попыткой.",
+  "fieldRequired": "Заполните это поле",
+  "emailInvalid": "Проверьте адрес электронной почты",
+  "dateInvalid": "Укажите дату в формате ДД.ММ.ГГГГ",
+  "periodInvalid": "Конец периода должен быть не раньше начала",
+  "positiveIntegerRequired": "Укажите целое число больше нуля",
+  "formPortalOnly": "Эту форму нельзя отправить из приложения. Откройте её на портале.",
+  "checkFields": "Проверьте заполнение",
+  "checkAttachments": "Проверьте вложения",
+  "fileRejected": "Файл не принят порталом. Заявление не отправлено.",
+  "checkAttachmentFormat": "Проверьте формат и размер вложения и повторите попытку.",
+  "portalCorrectForm": "Портал просит исправить заявление",
+  "submissionPending": "Запрос отправлен, но портал пока не подтвердил новый статус. Обновите список заявлений перед повторной отправкой.",
+  "groupNotInCatalog": "Такой группы нет в каталоге. Выберите свою группу из подсказок.",
+  "groupCheckConnection": "Не удалось проверить список групп. Проверьте соединение и попробуйте ещё раз.",
+  "groupNotInCatalogShort": "Такой группы нет в каталоге. Выберите группу из подсказок.",
+  "groupCheckFailed": "Не удалось проверить список групп. Попробуйте ещё раз.",
+  "signInIncomplete": "Не удалось завершить вход. Попробуйте ещё раз.",
+  "fullNameRequired": "Введите ФИО (от 3 до 255 символов)",
+  "credentialsRequired": "Введите логин и пароль от портала ВГСПУ",
+  "semanticRoomSuffix": ", аудитория {p0}",
+  "@semanticRoomSuffix": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "checkNamedField": "Проверьте поле «{p0}».",
+  "@checkNamedField": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "invalidNamedFile": "Недопустимый файл: {p0}.",
+  "@invalidNamedFile": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "portalStatus": "Статус на портале: {p0}",
+  "@portalStatus": {
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "aiTitle": "Помощник",
+  "aiSubtitle": "Расписание и документы вуза",
+  "aiWelcome": "Чем могу помочь?",
+  "aiIntro": "Найду пары на нужный день и помогу разобраться в документах университета. Ответы по документам — со ссылками на источники.",
+  "aiTomorrow": "Какое у меня завтра расписание?",
+  "aiScholarship": "Как получить социальную стипендию?",
+  "aiDorm": "Как заселиться в общежитие?",
+  "aiHint": "Не отправляй пароли, документы и личные сведения. Диалог хранится только в памяти приложения до выхода из аккаунта или перезапуска.",
+  "aiInput": "Сообщение…",
+  "aiSend": "Отправить",
+  "aiClear": "Очистить диалог и сбросить разрешение",
+  "aiThinking": "Проверяю расписание и источники…",
+  "aiPrivacyTitle": "Перед первым вопросом к документам",
+  "aiPrivacyBody": "Для подготовки ответа UNIO передаст внешнему сервису ИИ текст вопроса, предыдущий вопрос при уточнении и фрагменты публичных материалов. Логин, пароль, токен аккаунта и успеваемость не передаются. Расписание, новости и оценки не требуют обращения к модели. Не вводи персональные данные. Разрешение действует до очистки диалога или выхода; уже переданный вопрос этим не удаляется у получателя.",
+  "aiAllow": "Разрешить и отправить вопрос",
+  "aiNotNow": "Не сейчас",
+  "aiOffTopic": "Я помогаю с расписанием и документами университета. Спроси, например, о стипендии или общежитии.",
+  "aiSensitive": "В вопросе могут быть личные данные или секретные значения. Удали их и задай вопрос в общем виде.",
+  "aiInsufficient": "В проверенных документах пока недостаточно сведений. Уточни вопрос; если нужный документ ещё не добавлен, ответ лучше проверить в вузе.",
+  "aiNotConfigured": "Помощник ещё подключается на сервере. Попробуй позже.",
+  "aiChooseDate": "На какой день показать пары? Напиши «сегодня», «завтра», день недели или дату ГГГГ-ММ-ДД.",
+  "aiDateRange": "Сейчас можно проверить расписание в пределах двух недель от сегодняшнего дня.",
+  "aiChooseGroup": "Сначала выбери свою группу в расписании.",
+  "aiScheduleUnavailable": "Сейчас расписание получить не удалось. Это не означает, что пар нет. Попробуй позже.",
+  "aiPermissionRequired": "Для ответа по документам нужно разрешить передачу вопроса сервису ИИ. Отправь вопрос ещё раз.",
+  "aiAuthRequired": "Сессия UNIO истекла. Войди в аккаунт заново, чтобы продолжить.",
+  "aiLimit": "Достигнут лимит запросов помощника. Попробуй позже.",
+  "aiBusy": "Помощник сейчас занят. Попробуй через несколько секунд.",
+  "aiUnavailable": "Не удалось подготовить ответ. Проверь соединение и попробуй позже.",
+  "aiNoLessons": "На этот день в расписании пар нет.",
+  "aiScheduleSource": "Из сервиса расписания UNIO. Возможны изменения на портале.",
+  "aiSourceNotice": "Проверь условия в оригинале. Ответ помощника не заменяет решение университета.",
+  "aiPage": "Страница",
+  "aiOpenSource": "Открыть оригинал",
+  "aiSearching": "Ищу информацию…",
+  "aiWriting": "Готовлю ответ…",
+  "aiLoadingSchedule": "Проверяю расписание…",
+  "aiSources": "Источники",
+  "aiFollowup": "Какие документы нужны?",
+  "aiDayAfter": "Расписание на послезавтра",
+  "aiNewsLatest": "Вот последние публикации университета.",
+  "aiNewsOnDate": "Новости за {date}",
+  "@aiNewsOnDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "aiNewsEmpty": "В сохранённых новостях нет публикаций за этот день. Можно посмотреть последнюю новость или выбрать другую дату.",
+  "aiNewsChooseDate": "За какой день показать новости? Например: «новости за 21 октября 2026» или «новости за вчера».",
+  "aiNewsUnavailable": "Не получилось загрузить новости. Попробуй ещё раз чуть позже.",
+  "aiAllNews": "Все новости",
+  "aiReadNews": "Читать полностью",
+  "aiRequestsHelp": "Заказать справку или подать заявление можно на портале ВГСПУ или прямо в UNIO — в разделе «Справки и заявления». Для этого понадобится вход через портал.",
+  "aiOpenPortal": "Открыть портал ВГСПУ",
+  "aiReferenceNotice": "Информация носит справочный характер. ИИ может ошибаться — проверяй важные сведения по официальным источникам. Ответы не заменяют консультацию специалиста, в том числе медицинскую.",
+  "aiLoadingGrades": "Проверяю успеваемость…",
+  "aiGradesFromPortal": "Данные из раздела «Успеваемость». Баллы по срезам накопительные: складывать их не нужно.",
+  "aiOpenGrades": "Открыть успеваемость",
+  "aiGradesAuthRequired": "Успеваемость доступна после входа через портал ВГСПУ. Открой раздел и подключи свою учётную запись.",
+  "aiGradesUnavailable": "Не получилось загрузить успеваемость. Попробуй позже или обнови данные в разделе «Успеваемость».",
+  "aiGradesEmpty": "Портал пока не вернул данные об успеваемости. Это не означает, что у тебя нулевые баллы.",
+  "aiGradesNotFound": "Не нашёл этот предмет или семестр в твоей успеваемости. Уточни название, например: «Что у меня по русскому языку за 2 семестр?»",
+  "aiHistory": "История чатов",
+  "aiNewChat": "Новый чат",
+  "aiHistorySearch": "Поиск по перепискам",
+  "aiHistoryLocal": "История сохраняется только на этом устройстве.",
+  "aiHistoryExternal": "Вопросы к документам передаются внешнему ИИ-сервису после разрешения.",
+  "aiHistoryEmpty": "Здесь появятся твои разговоры",
+  "aiHistoryNoResults": "Переписки не найдены",
+  "aiRename": "Переименовать",
+  "aiDeleteChat": "Удалить чат",
+  "aiDeleteChatBody": "Переписка и связанные карточки будут удалены с этого устройства.",
+  "aiDeleteHistory": "Очистить всю историю",
+  "aiDeleteHistoryBody": "Все переписки и черновики этого аккаунта будут удалены с устройства. Отменить это действие нельзя.",
+  "aiCancelAction": "Отмена",
+  "aiDeleteAction": "Удалить",
+  "aiSaveAction": "Сохранить",
+  "aiTodayGroup": "Сегодня",
+  "aiYesterdayGroup": "Вчера",
+  "aiWeekGroup": "Последние 7 дней",
+  "aiEarlierGroup": "Ранее",
+  "aiUntitled": "Новый разговор",
+  "aiCopy": "Копировать",
+  "aiCopied": "Ответ скопирован",
+  "aiRetry": "Повторить",
+  "aiHelpful": "Полезно",
+  "aiNotHelpful": "Не помогло",
+  "aiStop": "Остановить ответ",
+  "aiInterrupted": "Ответ прерван. Полученные блоки сохранены; ответ может быть неполным.",
+  "aiNetworkError": "Не удалось связаться с сервером. Проверь подключение и попробуй ещё раз.",
+  "aiHistoryFailure": "Не удалось сохранить историю. Сообщения пока доступны только в текущем сеансе. Проверь свободное место и доступ к хранилищу.",
+  "aiHistoryRetry": "Проверить сохранение",
+  "aiLoadOlder": "Показать предыдущие сообщения",
+  "aiReturnSchedule": "Вернуться к расписанию",
+  "aiSourceUnavailable": "Официальная ссылка не указана",
+  "aiStarterGrades": "Что у меня по успеваемости?",
+  "aiStarterRequests": "Как заказать справку?",
+  "aiContactsFollowup": "Куда обращаться?",
+  "aiEligibilityFollowup": "Кто имеет право на получение?",
+  "aiNewsFollowup": "Покажи последнюю новость",
+  "aiTomorrowFirst": "Какая у меня завтра первая пара?",
+  "aiHistoryBrowser": "В браузере история может исчезнуть после очистки данных сайта или выхода из приватного режима.",
+  "aiLegacy": "Сообщение из другой версии приложения",
+  "aiOpenStatements": "Открыть заявления"
+}

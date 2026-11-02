@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="18dp" android:background="@drawable/widget_background">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="unio" android:textColor="#F7F3FF" android:textSize="18sp" style="@style/WidgetUnioSemibold" android:letterSpacing="-0.04" />
+        <TextView android:id="@+id/widget_group" android:text="@string/widget_preview_group" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:gravity="end" style="@style/WidgetUnioRegular" android:textColor="#D7C9F5" android:textSize="11sp" android:maxLines="1" android:ellipsize="end" />
+    </LinearLayout>
+    <TextView android:id="@+id/widget_eyebrow" android:text="@string/widget_preview_eyebrow" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" android:textColor="#C8B6F4" android:textSize="10sp" android:letterSpacing="0.08" style="@style/WidgetUnioSemibold" android:maxLines="1" android:ellipsize="end" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" android:gravity="center_vertical">
+        <TextView android:id="@+id/widget_time" android:text="@string/widget_preview_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#F7F3FF" android:textSize="26sp" style="@style/WidgetUnioSemibold" android:maxLines="1" android:ellipsize="end" />
+        <TextView android:id="@+id/widget_subject" android:text="@string/widget_preview_subject" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="3dp" android:textColor="#FFFFFF" android:textSize="16sp" style="@style/WidgetUnioSemibold" android:maxLines="2" android:ellipsize="end" />
+        <TextView android:id="@+id/widget_details" android:text="@string/widget_preview_details" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp" style="@style/WidgetUnioRegular" android:textColor="#D4CBE6" android:textSize="12sp" android:maxLines="1" android:ellipsize="end" />
+    </LinearLayout>
+    <TextView android:id="@+id/widget_following" android:text="@string/widget_preview_following" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" style="@style/WidgetUnioRegular" android:textColor="#CDC4DF" android:textSize="11sp" android:maxLines="1" android:ellipsize="end" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:gravity="center_vertical">
+        <TextView android:id="@+id/widget_freshness" android:text="@string/widget_preview_freshness" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" style="@style/WidgetUnioRegular" android:textColor="#B4A7CB" android:textSize="10sp" android:maxLines="1" android:ellipsize="end" />
+        <ImageButton android:id="@+id/widget_refresh" android:layout_width="36dp" android:layout_height="36dp" android:padding="8dp" android:background="@drawable/widget_pill" android:src="@drawable/widget_refresh" android:contentDescription="@string/widget_refresh_description" />
+    </LinearLayout>
+</LinearLayout>
