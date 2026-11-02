@@ -89,6 +89,11 @@ flutter gen-l10n
 
 ## Android builds
 
+Android checks `app-update.json` in this repository on startup / resume, at most
+once every six hours. Settings also offers a manual check. Publish an APK first,
+then update the manifest's `versionCode`, version, APK link, and RU/EN notes.
+This also supports beta releases; no GitHub token is embedded in the app.
+
 ```sh
 flutter build apk --release
 flutter build apk --release --split-per-abi

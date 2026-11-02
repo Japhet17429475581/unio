@@ -4,6 +4,8 @@ import '../widgets/home_widget_sheet.dart';
 import '../services/home_widget_service.dart';
 import '../services/web_push_service.dart';
 import '../services/app_version.dart';
+import '../services/app_update_service.dart';
+import 'dart:async';
 import 'legal_documents_screen.dart';
 import '../services/analytics_service.dart';
 import '../utils/user_messages.dart';
@@ -67,13 +69,14 @@ class SettingsTab extends StatefulWidget {
   State<SettingsTab> createState() => _SettingsTabState();
 }
 
-class _SettingsTabState extends State<SettingsTab> {
+class _SettingsTabState extends State<SettingsTab> with WidgetsBindingObserver {
   bool _pushEnabled = false;
   bool _pushBusy = false;
   bool _loadingPrefs = true;
   bool _webPushAvailable = false;
   String? _portalLogin;
   bool _confirmingLogout = false;
+  bool _checkingUpdate = false;
   late final Future<String> _version = loadAppVersion();
   bool get _guest => widget.teacherFio == null && !widget.isPortalMode;
   String get _logoutLabel => _guest ? l10n.uiEndGuestSession : l10n.uiSignOut;
@@ -109,10 +112,27 @@ class _SettingsTabState extends State<SettingsTab> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) unawaited(checkForAppUpdate(context));
+    });
     if (widget.teacherFio == null) {
       _loadPushState();
       _loadPortalLogin();
     }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      unawaited(checkForAppUpdate(context));
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   Future<void> _loadPushState() async {
@@ -323,6 +343,33 @@ class _SettingsTabState extends State<SettingsTab> {
               trailing: const Icon(Icons.chevron_right_rounded),
               onTap: _chooseLanguage,
             ),
+            if (supportsAppUpdates) ...[
+              const Divider(height: 24, thickness: .5),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(Icons.system_update_rounded,
+                    color: colors.onSurfaceVariant),
+                title: Text(appLocale.locale.languageCode == 'en'
+                    ? 'Check for updates'
+                    : 'Проверить обновления'),
+                trailing: _checkingUpdate
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2))
+                    : const Icon(Icons.chevron_right_rounded),
+                onTap: _checkingUpdate
+                    ? null
+                    : () async {
+                        setState(() => _checkingUpdate = true);
+                        try {
+                          await checkForAppUpdate(context, manual: true);
+                        } finally {
+                          if (mounted) setState(() => _checkingUpdate = false);
+                        }
+                      },
+              ),
+            ],
             const Divider(height: 24, thickness: .5),
             _SettingSwitch(
                 value: widget.darkMode,

@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.0-beta.12 — 2026-11-03
+
+- Check Android updates in the background at most once every six hours.
+- Add a manual update check in Settings, with Russian and English messages.
+- Offer the official GitHub APK without blocking app access or installing silently.
+- Validate public release metadata and allow APK links only from this repository.
+
+For each future release, update `app-update.json` after publishing the APK: raise
+`versionCode`, set the version and exact APK URL, and supply short RU/EN notes.
+Keep the APK signing key unchanged. Existing beta.11 installations need one
+manual update to beta.12 before automatic update checks become available.
+
 ## 1.0.0-beta.11 — 2026-11-02
 
 - Automatically fetch and save the current and following timetable weeks in
