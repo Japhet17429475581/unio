@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0-beta.13 — 2026-11-03
+
+- Point Android and the PWA reverse proxy to the replacement Bothost API host.
+- Backend domain routing must be enabled on the host before API access works.
+
 ## 1.0.0-beta.12 — 2026-11-03
 
 - Check Android updates in the background at most once every six hours.

@@ -1,4 +1,4 @@
-UNIO PWA beta.11: local AI chat history, automatic two-week timetable cache and university services.
+UNIO PWA beta.13: updated Bothost API host, local AI history and two-week timetable cache.
 Assistant backend setup: docs/assistant.md in the project. Never put the DeepSeek key here.
 Interface language: Settings / Preferences / Language (Russian or English).
 The language is saved in this browser. University content and legal documents
