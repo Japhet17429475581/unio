@@ -1,2 +1,2 @@
 const String apiHost = String.fromEnvironment('API_HOST',
-    defaultValue: 'bot-1790421609-9641-larisfonkraft.bothost.tech');
+    defaultValue: 'bot-1793726455-4291-larisfonkraft.bothost.tech');

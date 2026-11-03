@@ -73,7 +73,7 @@ def main():
                 route.fulfill(status=status, content_type='application/json', body=json.dumps(data))
             elif url.startswith(origin + '/'):
                 route.continue_()
-            elif urlparse(url).hostname == 'bot-1790421609-9641-larisfonkraft.bothost.tech':
+            elif urlparse(url).hostname == 'bot-1793726455-4291-larisfonkraft.bothost.tech':
                 path = urlparse(url).path
                 headers = {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*',
                            'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'}
