@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.0-beta.13",
-  "versionCode": 14,
-  "apkUrl": "https://github.com/Japhet17429475581/unio/releases/download/v1.0.0-beta.13/UNIO-1.0.0-beta.13-universal.apk",
-  "notesRu": "Обновлён адрес сервера UNIO для Android и PWA.",
-  "notesEn": "Updated the UNIO API address for Android and PWA."
+  "version": "1.0.0-beta.14",
+  "versionCode": 15,
+  "apkUrl": "https://github.com/Japhet17429475581/unio/releases/download/v1.0.0-beta.14/UNIO-1.0.0-beta.14-universal.apk",
+  "notesRu": "Убраны лишняя плашка в расписании преподавателей и строка «Затем…» в виджете. Исправлены эффекты нажатия у срезов, документов, обновлений и выбора языка. Дата вступления документов в силу — 11.08.2026.",
+  "notesEn": "Removed the redundant teacher schedule banner and the widget's extra next-lesson row. Removed press overlays from assessment details, documents, update checks and language controls. Set the legal documents' effective date to 11 August 2026."
 }
