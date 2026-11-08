@@ -7,6 +7,5 @@
     <string name="widget_preview_time">На сегодня</string>
     <string name="widget_preview_subject">Твоё расписание</string>
     <string name="widget_preview_details">Пары и аудитории под рукой</string>
-    <string name="widget_preview_following">Открой UNIO, чтобы выбрать группу</string>
     <string name="widget_preview_freshness">UNIO · Ближайшая пара</string>
 </resources>

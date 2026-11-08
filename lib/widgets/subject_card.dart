@@ -2,6 +2,7 @@ import '../services/locale_service.dart';
 import 'package:flutter/material.dart';
 import '../models/portal_progress.dart';
 import 'unio_card.dart';
+import 'tap_feedback.dart';
 
 String _value(dynamic value) =>
     value == null || '$value'.trim().isEmpty ? '—' : '$value';
@@ -68,7 +69,8 @@ class SubjectCard extends StatelessWidget {
                             ?.copyWith(color: colors.onSurface)),
                   ])),
           if (cuts.any((cut) => cut != null && !cut.isEmpty))
-            ExpansionTile(
+            QuietTap(
+                child: ExpansionTile(
               initiallyExpanded: initiallyExpanded,
               key:
                   PageStorageKey('cuts-${subject.semester}-${subject.subject}'),
@@ -106,7 +108,7 @@ class SubjectCard extends StatelessWidget {
                                         color: colors.onSurfaceVariant)),
                               ])))
               ],
-            ),
+            )),
         ]));
   }
 }

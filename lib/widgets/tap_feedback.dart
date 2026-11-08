@@ -17,6 +17,23 @@ void tapFeedback() {
   SystemSound.play(SystemSoundType.click);
 }
 
+/// Opens rows and disclosures without a pressed overlay; focus stays visible.
+class QuietTap extends StatelessWidget {
+  final Widget child;
+
+  const QuietTap({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) => Theme(
+        data: Theme.of(context).copyWith(
+          splashFactory: NoSplash.splashFactory,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: child,
+      );
+}
+
 /// Кнопка с заливкой (замена FilledButton) с более выраженным "импактом"
 /// при нажатии: слегка сжимается и упруго возвращается, плюс звук и
 /// вибрация. Поддерживает индикатор загрузки вместо текста/иконки.

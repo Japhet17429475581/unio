@@ -462,6 +462,7 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
             key:
                 PageStorageKey('${widget.teacherFio ?? widget.group}-$dateKey'),
             lessons: snapshot.data ?? [],
+            showScheduleHeader: widget.teacherFio == null,
             weekStart: start,
             controller: controller,
             today: widget.clock(),

@@ -5,6 +5,7 @@ import '../services/legal_service.dart';
 import '../services/secure_storage_service.dart';
 import '../widgets/signature_surface.dart';
 import '../widgets/unio_card.dart';
+import '../widgets/tap_feedback.dart';
 
 /// A single screen serves both first acceptance and subsequent review/revocation.
 class LegalDocumentsScreen extends StatefulWidget {
@@ -173,12 +174,13 @@ class _LegalDocumentsScreenState extends State<LegalDocumentsScreen> {
                     const LinearProgressIndicator(),
                   for (final doc in _docs?.values ?? <LegalDocument>[]) ...[
                     UnioCard(
-                        child: ExpansionTile(
-                            tilePadding: EdgeInsets.zero,
-                            title: Text(doc.title),
-                            subtitle: Text(
-                                '${doc.draft ? '${l10n.draft} · ' : ''}${doc.version}${_receipts[doc.id] == null ? '' : '\n${_receipts[doc.id]!['accepted'] == true ? l10n.accepted : l10n.withdrawn}: ${_receipts[doc.id]!['occurred_at']}'}'),
-                            children: [SelectableText(doc.text)])),
+                        child: QuietTap(
+                            child: ExpansionTile(
+                                tilePadding: EdgeInsets.zero,
+                                title: Text(doc.title),
+                                subtitle: Text(
+                                    '${doc.draft ? '${l10n.draft} · ' : ''}${doc.version}${_receipts[doc.id] == null ? '' : '\n${_receipts[doc.id]!['accepted'] == true ? l10n.accepted : l10n.withdrawn}: ${_receipts[doc.id]!['occurred_at']}'}'),
+                                children: [SelectableText(doc.text)]))),
                     const SizedBox(height: 12)
                   ],
                   if (widget.requireAcceptance && _docs != null) ...[

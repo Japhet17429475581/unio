@@ -11,6 +11,7 @@ class DayCard extends StatelessWidget {
   final bool isToday;
   final List<Lesson> lessons;
   final bool showGroups;
+  final bool showScheduleHeader;
   final ValueChanged<Lesson>? onLessonTap;
   final Lesson? focusedLesson;
   final bool highlightFocus;
@@ -22,6 +23,7 @@ class DayCard extends StatelessWidget {
       required this.isToday,
       required this.lessons,
       this.showGroups = false,
+      this.showScheduleHeader = true,
       this.onLessonTap,
       this.focusedLesson,
       this.highlightFocus = true,
@@ -35,9 +37,9 @@ class DayCard extends StatelessWidget {
     final muted = theme.colorScheme.onSurfaceVariant;
     final calm = theme.extension<UnioSignature>() != null;
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      if (calm && daySelector != null)
+      if (daySelector != null && (calm || !showScheduleHeader))
         daySelector!
-      else
+      else if (showScheduleHeader)
         UnioCard(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Column(
@@ -67,7 +69,11 @@ class DayCard extends StatelessWidget {
                   ],
                 ])),
       Padding(
-        padding: EdgeInsets.fromLTRB(0, calm ? 20 : 24, 0, calm ? 12 : 16),
+        padding: EdgeInsets.fromLTRB(
+            0,
+            !showScheduleHeader && daySelector == null ? 0 : (calm ? 20 : 24),
+            0,
+            calm ? 12 : 16),
         child: Wrap(
             spacing: 8,
             runSpacing: 4,

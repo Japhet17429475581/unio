@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.0-beta.14 — 2026-11-08
+
+- Set the effective date to 11.08.2026 in all four legal documents and
+  synchronize consent hashes and versions with the backend and Android.
+- Remove the redundant schedule/date banner from teacher timetables.
+- Remove the additional "Then…" lesson row from the Android home-screen widget.
+- Open assessment details, documents, update checks, and language controls
+  without a pressed overlay; retain disclosure-arrow animations.
+
 ## 1.0.0-beta.13 — 2026-11-03
 
 - Point Android and the PWA reverse proxy to the replacement Bothost API host.

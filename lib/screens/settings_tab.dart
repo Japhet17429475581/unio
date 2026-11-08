@@ -199,7 +199,8 @@ class _SettingsTabState extends State<SettingsTab> with WidgetsBindingObserver {
     final selected = await showModalBottomSheet<String>(
       context: context,
       showDragHandle: true,
-      builder: (context) => SafeArea(
+      builder: (context) => QuietTap(
+          child: SafeArea(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
@@ -218,7 +219,7 @@ class _SettingsTabState extends State<SettingsTab> with WidgetsBindingObserver {
             ),
           const SizedBox(height: 12),
         ]),
-      ),
+      )),
     );
     if (selected == null || !mounted) return;
     try {
@@ -332,7 +333,8 @@ class _SettingsTabState extends State<SettingsTab> with WidgetsBindingObserver {
           const SizedBox(height: 12),
           UnioCard(
               child: Column(children: [
-            ListTile(
+            QuietTap(
+                child: ListTile(
               contentPadding: EdgeInsets.zero,
               leading:
                   Icon(Icons.language_rounded, color: colors.onSurfaceVariant),
@@ -342,10 +344,11 @@ class _SettingsTabState extends State<SettingsTab> with WidgetsBindingObserver {
                   : 'Русский'),
               trailing: const Icon(Icons.chevron_right_rounded),
               onTap: _chooseLanguage,
-            ),
+            )),
             if (supportsAppUpdates) ...[
               const Divider(height: 24, thickness: .5),
-              ListTile(
+              QuietTap(
+                  child: ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: Icon(Icons.system_update_rounded,
                     color: colors.onSurfaceVariant),
@@ -368,7 +371,7 @@ class _SettingsTabState extends State<SettingsTab> with WidgetsBindingObserver {
                           if (mounted) setState(() => _checkingUpdate = false);
                         }
                       },
-              ),
+              )),
             ],
             const Divider(height: 24, thickness: .5),
             _SettingSwitch(
@@ -424,15 +427,16 @@ class _SettingsTabState extends State<SettingsTab> with WidgetsBindingObserver {
           Text(l10n.uiPrivacy, style: theme.textTheme.titleMedium),
           const SizedBox(height: 12),
           UnioCard(
-              child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.privacy_tip_outlined),
-                  title: Text(l10n.uiDocumentsAndData),
-                  subtitle: Text(l10n.uiConsentAnalyticsAndDeletion),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) =>
-                          LegalDocumentsScreen(onDelete: widget.onDelete))))),
+              child: QuietTap(
+                  child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.privacy_tip_outlined),
+                      title: Text(l10n.uiDocumentsAndData),
+                      subtitle: Text(l10n.uiConsentAnalyticsAndDeletion),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => LegalDocumentsScreen(
+                              onDelete: widget.onDelete)))))),
           if (kIsWeb) ...[
             const SizedBox(height: 24),
             UnioCard(

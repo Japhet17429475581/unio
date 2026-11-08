@@ -318,6 +318,7 @@ class _TeacherLookupScreenState extends State<TeacherLookupScreen>
                                     Text(l10n.uiNoKnownClassesForThisDayTheFull)
                                   else
                                     DayCard(
+                                        showScheduleHeader: false,
                                         day: _selected,
                                         isToday: selectedIsToday,
                                         lessons: lessons,

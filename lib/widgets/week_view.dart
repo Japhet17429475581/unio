@@ -12,6 +12,7 @@ import 'unio_loader.dart';
 class WeekView extends StatefulWidget {
   final List<Lesson> lessons;
   final bool showGroups;
+  final bool showScheduleHeader;
   final ValueChanged<Lesson>? onLessonTap;
   final VoidCallback? onDaySelected;
   final Widget? leading;
@@ -28,6 +29,7 @@ class WeekView extends StatefulWidget {
       {super.key,
       required this.lessons,
       this.showGroups = false,
+      this.showScheduleHeader = true,
       this.onLessonTap,
       this.onDaySelected,
       this.leading,
@@ -184,6 +186,7 @@ class _WeekViewState extends State<WeekView> {
                 isToday: isoDate(day) == isoDate(today),
                 lessons: lessons,
                 showGroups: widget.showGroups,
+                showScheduleHeader: widget.showScheduleHeader,
                 onLessonTap: widget.onLessonTap,
                 focusedLesson: widget.focusedLesson,
                 highlightFocus: widget.highlightFocus,

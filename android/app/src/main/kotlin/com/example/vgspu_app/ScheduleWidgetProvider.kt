@@ -126,11 +126,6 @@ class ScheduleWidgetProvider : AppWidgetProvider() {
                     listOfNotNull(it.room.takeIf { room -> room.isNotBlank() }?.let { room -> "Ауд. $room" },
                         it.detail.takeIf { detail -> detail.isNotBlank() }).joinToString(" · ")
                 } ?: if (snapshot == null) "Войди и выбери своё расписание" else "Нажми, чтобы открыть расписание")
-                val following = lessons.drop(1).firstOrNull()
-                views.setTextViewText(R.id.widget_following, following?.let {
-                    "Затем ${if (it.date == now.toLocalDate()) "" else it.date.format(shortDate) + " · "}${it.start.format(displayTime)} · ${it.subject}"
-                } ?: "Твой день — в твоём ритме")
-                views.setViewVisibility(R.id.widget_following, if (compact || visible == null) View.GONE else View.VISIBLE)
                 val synced = snapshot?.fetchedAt?.takeIf { it > 0 }?.let {
                     val date = java.time.Instant.ofEpochMilli(it).atOffset(universityZone)
                     "${if (date.toLocalDate() == now.toLocalDate()) "" else date.format(shortDate) + " · "}${date.format(displayTime)}"
