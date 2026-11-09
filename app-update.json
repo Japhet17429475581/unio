@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.0-beta.14",
-  "versionCode": 15,
-  "apkUrl": "https://github.com/Japhet17429475581/unio/releases/download/v1.0.0-beta.14/UNIO-1.0.0-beta.14-universal.apk",
-  "notesRu": "Убраны лишняя плашка в расписании преподавателей и строка «Затем…» в виджете. Исправлены эффекты нажатия у срезов, документов, обновлений и выбора языка. Дата вступления документов в силу — 11.08.2026.",
-  "notesEn": "Removed the redundant teacher schedule banner and the widget's extra next-lesson row. Removed press overlays from assessment details, documents, update checks and language controls. Set the legal documents' effective date to 11 August 2026."
+  "version": "1.0.0-beta.15",
+  "versionCode": 16,
+  "apkUrl": "https://github.com/Japhet17429475581/unio/releases/download/v1.0.0-beta.15/UNIO-1.0.0-beta.15-universal.apk",
+  "notesRu": "Четыре вкладки: Расписание, Успеваемость, Университет и UNIO AI. Вернули прежний значок AI с тремя искрами, добавили мягкие анимации ожидания. Настройки открываются шестерёнкой в расписании. История чатов и остальные функции сохранены.",
+  "notesEn": "Four tabs: Schedule, Grades, University, and UNIO AI. Restored the original three-sparkle AI icon and added restrained thinking animations. Open Settings from the timetable header. Local chats and existing features are preserved."
 }
