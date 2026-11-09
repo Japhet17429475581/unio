@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.0-beta.15 — 2026-11-10
+
+- Keep the original timetable and news circles as the opening screen.
+- Restore four tabs: Schedule, Grades, University, and UNIO AI. Open existing
+  settings from the timetable header and remove the duplicate University grade link.
+- Restore the familiar three-sparkle AI icon. Add restrained purple motion for
+  real thinking states, with reduced-motion, background, and hidden-tab support.
+- Preserve local chats, drafts, verified sources, native cards, and portal consent.
+- Reuse timetable requests and prefetch both weeks; keep personal grades lazy.
+- Fix account/theme updates while Settings is open without rebuilding a sibling
+  route during the current frame.
+- Android-only release; existing PWA deployment and archives are unchanged.
+
 ## 1.0.0-beta.14 — 2026-11-08
 
 - Set the effective date to 11.08.2026 in all four legal documents and

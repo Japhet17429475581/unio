@@ -2002,7 +2002,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get aiTitle => 'Assistant';
+  String get aiTitle => 'UNIO AI';
 
   @override
   String get aiSubtitle => 'Schedule and university documents';
@@ -2320,7 +2320,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aiNewsFollowup => 'Show the latest news';
 
   @override
-  String get aiTomorrowFirst => 'What is my first class tomorrow?';
+  String get aiTomorrowFirst => 'What classes do I have tomorrow?';
 
   @override
   String get aiHistoryBrowser =>
@@ -2331,4 +2331,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiOpenStatements => 'Open applications';
+
+  @override
+  String get notificationPreferencesDescription =>
+      'Reminders for classes and completed applications. Display permission is controlled in your device settings.';
 }

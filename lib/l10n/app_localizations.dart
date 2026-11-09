@@ -3558,7 +3558,7 @@ abstract class AppLocalizations {
   /// No description provided for @aiTitle.
   ///
   /// In ru, this message translates to:
-  /// **'Помощник'**
+  /// **'UNIO AI'**
   String get aiTitle;
 
   /// No description provided for @aiSubtitle.
@@ -4148,6 +4148,12 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Открыть заявления'**
   String get aiOpenStatements;
+
+  /// No description provided for @notificationPreferencesDescription.
+  ///
+  /// In ru, this message translates to:
+  /// **'Напоминания о парах и готовности заявлений. Разрешение на показ задаётся в настройках устройства.'**
+  String get notificationPreferencesDescription;
 }
 
 class _AppLocalizationsDelegate

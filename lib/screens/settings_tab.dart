@@ -35,10 +35,14 @@ class SettingsTab extends StatefulWidget {
   final ValueChanged<bool> onDarkModeChanged;
   final String? teacherFio;
   final bool loggingOut;
+  final bool showHeader;
+  final bool notificationsOnly;
 
   const SettingsTab({
     super.key,
     this.onDelete,
+    this.showHeader = true,
+    this.notificationsOnly = false,
     required this.group,
     this.accountGroup,
     this.onChangeGroup,
@@ -53,6 +57,8 @@ class SettingsTab extends StatefulWidget {
   const SettingsTab.teacher({
     super.key,
     this.onDelete,
+    this.showHeader = true,
+    this.notificationsOnly = false,
     required String fio,
     required this.onLogout,
     required this.darkMode,
@@ -233,22 +239,58 @@ class _SettingsTabState extends State<SettingsTab> with WidgetsBindingObserver {
     }
   }
 
+  List<Widget> _notificationControls() {
+    final colors = Theme.of(context).colorScheme;
+    return [
+      _SettingSwitch(
+          value: _pushEnabled,
+          onChanged:
+              _loadingPrefs || _pushBusy || (kIsWeb && !_webPushAvailable)
+                  ? null
+                  : (value) {
+                      tapFeedback();
+                      _togglePush(value);
+                    },
+          icon: Icon(Icons.notifications_none_rounded,
+              color: colors.onSurfaceVariant),
+          title: Text(l10n.uiPushNotifications)),
+      if (_loadingPrefs || _pushBusy)
+        const LinearProgressIndicator(minHeight: 2),
+      if (kIsWeb && !_loadingPrefs && !_webPushAvailable)
+        Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Text(
+                l10n.uiNotificationsAreCurrentlyUnavailableOnIphoneAddUnio,
+                style: Theme.of(context).textTheme.bodySmall)),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     Localizations.localeOf(context);
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
     final teacher = widget.teacherFio != null;
+    if (widget.notificationsOnly)
+      return ListView(padding: const EdgeInsets.all(20), children: [
+        Text(l10n.notificationPreferencesDescription,
+            style: theme.textTheme.bodyMedium
+                ?.copyWith(height: 1.5, color: colors.onSurfaceVariant)),
+        const SizedBox(height: 20),
+        UnioCard(child: Column(children: _notificationControls())),
+      ]);
     return SignatureBackdrop(
         child: ListView(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
             children: [
-          Text(l10n.uiSettings, style: theme.textTheme.headlineSmall),
-          const SizedBox(height: 6),
-          Text(l10n.uiAccountAndAppPreferences,
-              style: theme.textTheme.bodyLarge
-                  ?.copyWith(color: colors.onSurfaceVariant)),
-          const SizedBox(height: 24),
+          if (widget.showHeader) ...[
+            Text(l10n.uiSettings, style: theme.textTheme.headlineSmall),
+            const SizedBox(height: 6),
+            Text(l10n.uiAccountAndAppPreferences,
+                style: theme.textTheme.bodyLarge
+                    ?.copyWith(color: colors.onSurfaceVariant)),
+            const SizedBox(height: 24)
+          ],
           FeatureReveal(
               child: SignatureSurface(
                   padding: const EdgeInsets.all(24),
@@ -388,26 +430,7 @@ class _SettingsTabState extends State<SettingsTab> with WidgetsBindingObserver {
                 title: Text(l10n.uiDarkTheme)),
             if (!teacher) ...[
               const Divider(height: 24, thickness: .5),
-              _SettingSwitch(
-                  value: _pushEnabled,
-                  onChanged: _loadingPrefs ||
-                          _pushBusy ||
-                          (kIsWeb && !_webPushAvailable)
-                      ? null
-                      : (value) {
-                          tapFeedback();
-                          _togglePush(value);
-                        },
-                  icon: Icon(Icons.notifications_none_rounded,
-                      color: colors.onSurfaceVariant),
-                  title: Text(l10n.uiPushNotifications)),
-              if (_pushBusy) const LinearProgressIndicator(minHeight: 2),
-              if (kIsWeb && !_loadingPrefs && !_webPushAvailable)
-                Padding(
-                    padding: EdgeInsets.only(top: 6),
-                    child: Text(
-                        l10n.uiNotificationsAreCurrentlyUnavailableOnIphoneAddUnio,
-                        style: TextStyle(fontSize: 12))),
+              ..._notificationControls(),
             ],
           ])),
           if (homeWidget.supported) ...[

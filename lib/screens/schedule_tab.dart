@@ -1,3 +1,4 @@
+import '../services/schedule_repository.dart';
 import '../services/locale_service.dart';
 import '../widgets/signature_surface.dart';
 import '../services/analytics_service.dart';
@@ -15,9 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import '../models/lesson.dart';
 import '../config/calm_depth.dart';
 import '../models/next_lesson.dart';
-import '../services/api_service.dart';
 import '../services/lesson_notes_service.dart';
-import '../services/teachers_service.dart';
 import '../utils/date_utils.dart';
 import '../widgets/message.dart';
 import '../widgets/tap_feedback.dart';
@@ -31,6 +30,9 @@ import '../widgets/assistant_entry_button.dart';
 
 class ScheduleTab extends StatefulWidget {
   final String group;
+  final ScheduleRepository? repository;
+  final VoidCallback? onOpenSettings;
+  final VoidCallback? onOpenNotifications;
   final String? teacherFio;
   final ValueChanged<Lesson>? onLessonTap;
   final VoidCallback? onOpenRequests;
@@ -41,6 +43,9 @@ class ScheduleTab extends StatefulWidget {
   const ScheduleTab(
       {super.key,
       required this.group,
+      this.repository,
+      this.onOpenSettings,
+      this.onOpenNotifications,
       this.clock = universityScheduleNow,
       this.onOpenRequests,
       this.onOpenGrades,
@@ -51,6 +56,9 @@ class ScheduleTab extends StatefulWidget {
   const ScheduleTab.teacher({
     super.key,
     required String fio,
+    this.repository,
+    this.onOpenSettings,
+    this.onOpenNotifications,
     this.onLessonTap,
     this.clock = universityScheduleNow,
   })  : group = '',
@@ -60,17 +68,17 @@ class ScheduleTab extends StatefulWidget {
         teacherFio = fio;
 
   @override
-  State<ScheduleTab> createState() => _ScheduleTabState();
+  State<ScheduleTab> createState() => ScheduleTabState();
 }
 
-class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
+class ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
   /// 0 — эта неделя, 1 — следующая
   int _offset = 0;
   final _stories = NewsStoriesController();
-  late final AssistantConversation _assistant;
+  late final AssistantConversation? _assistant;
 
   // Каждую неделю грузим один раз — переключение кнопкой мгновенное
-  final Map<String, Future<List<Lesson>>> _futures = {};
+  late ScheduleRepository _repository;
   late final Future<void> _photoRecovery;
   bool _openingNotes = false;
   final _pages = PageController();
@@ -86,15 +94,24 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    _assistant = AssistantConversation(
-        grades: widget.gradesRepository == null
-            ? null
-            : () => widget.gradesRepository!.load());
+    _assistant = widget.onOpenSettings != null || widget.teacherFio != null
+        ? null
+        : AssistantConversation(
+            grades: widget.gradesRepository == null
+                ? null
+                : () => widget.gradesRepository!.load());
+    _repository = widget.repository ??
+        ScheduleRepository(group: widget.group, teacherFio: widget.teacherFio);
+    _repository.addListener(_repositoryChanged);
     _today = widget.clock();
     _prefetchWeeks();
     WidgetsBinding.instance.addObserver(this);
     _watchDay();
     _photoRecovery = _recoverPhotos();
+  }
+
+  void _repositoryChanged() {
+    if (mounted) setState(() {});
   }
 
   void _checkDay() {
@@ -130,7 +147,9 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
     _pages.dispose();
     _highlightTimer?.cancel();
     _stories.dispose();
-    _assistant.dispose();
+    _repository.removeListener(_repositoryChanged);
+    if (widget.repository == null) _repository.dispose();
+    _assistant?.dispose();
     for (final controller in _scrollControllers.values) {
       controller.dispose();
     }
@@ -147,7 +166,7 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
         duration: CalmDepth.motion, curve: Curves.easeInOutCubic);
   }
 
-  Future<void> _showLesson(Lesson lesson) async {
+  Future<void> showLesson(Lesson lesson) async {
     _highlightTimer?.cancel();
     setState(() {
       _focusedLesson = lesson;
@@ -215,7 +234,7 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
     }
   }
 
-  Future<void> _openStudentNotes(Lesson lesson) async {
+  Future<void> openStudentNotes(Lesson lesson) async {
     if (_openingNotes) return;
     _openingNotes = true;
     tapFeedback();
@@ -235,23 +254,8 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
     return DateTime(monday.year, monday.month, monday.day + 7 * offset);
   }
 
-  Future<List<Lesson>> _request(int offset, {bool refresh = false}) {
-    final fio = widget.teacherFio;
-    if (fio != null) {
-      return fetchTeacherSchedule(fio,
-              date: _weekStart(offset), refresh: refresh)
-          .then((schedule) => schedule.lessons);
-    }
-    return fetchLessons(
-      widget.group,
-      date: _weekStart(offset),
-      week: true,
-      refresh: refresh,
-    );
-  }
-
   Future<List<Lesson>> _weekFuture(int offset) =>
-      _futures.putIfAbsent(isoDate(_weekStart(offset)), () => _request(offset));
+      _repository.week(_weekStart(offset));
 
   void _prefetchWeeks() {
     // Start both requests together. The services persist successful responses
@@ -264,11 +268,10 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
   }
 
   Future<void> _reloadWeek(int offset) async {
-    final future = _request(offset, refresh: true);
+    final future = _repository.refresh(_weekStart(offset));
     if (_stories.items.isNotEmpty || _stories.error != null)
       _stories.load(refresh: true);
     setState(() {
-      _futures[isoDate(_weekStart(offset))] = future;
       _focusedLesson = null;
     });
 
@@ -282,9 +285,9 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.group != widget.group ||
         oldWidget.teacherFio != widget.teacherFio) {
-      _futures.clear();
+      _repository.select(group: widget.group, teacherFio: widget.teacherFio);
       _prefetchWeeks();
-      _assistant.clear();
+      _assistant?.clear();
       _focusedLesson = null;
     }
   }
@@ -347,17 +350,26 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
                   child: Text(isNext ? l10n.uiNextWeek : l10n.uiThisWeek,
                       style: theme.textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.w700))),
-              if (widget.teacherFio == null)
+              if (widget.onOpenNotifications != null)
+                IconButton(
+                    tooltip: l10n.uiPushNotifications,
+                    onPressed: widget.onOpenNotifications,
+                    icon: const Icon(Icons.notifications_none_rounded)),
+              if (widget.onOpenSettings != null)
+                IconButton(
+                    tooltip: l10n.uiSettings,
+                    onPressed: widget.onOpenSettings,
+                    icon: const Icon(Icons.settings_outlined))
+              else if (widget.teacherFio == null)
                 AssistantEntryButton(
                     onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (_) => AssistantScreen(
-                                conversation: _assistant,
+                                conversation: _assistant!,
                                 group: widget.group,
                                 onOpenRequests: widget.onOpenRequests,
                                 onOpenGrades: widget.onOpenGrades,
-                                onLessonTap: (lesson) =>
-                                    _openStudentNotes(lesson))))),
+                                onLessonTap: openStudentNotes)))),
             ]),
             const SizedBox(height: 4),
             Text(
@@ -428,7 +440,7 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
             key: ValueKey('next-lesson-${widget.group}-$dateKey'),
             schedule: todayFuture,
             clock: widget.clock,
-            onLessonTap: _showLesson,
+            onLessonTap: showLesson,
             onRetry: () => _reloadWeek(0)),
     ]);
     return FutureBuilder<List<Lesson>>(
@@ -476,7 +488,7 @@ class _ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
             emptyTitle: l10n.uiNoScheduleFoundForThisWeek,
             onRefresh: () => _reloadWeek(offset),
             onLessonTap: widget.teacherFio == null
-                ? _openStudentNotes
+                ? openStudentNotes
                 : widget.onLessonTap);
       },
     );

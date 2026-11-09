@@ -114,6 +114,8 @@ void main() {
           ),
         ));
         await tester.pumpAndSettle();
+        await tester.tap(find.text('Расписание'));
+        await tester.pumpAndSettle();
         // The timetable opens today; this fixture has a lesson on Monday.
         await tester
             .ensureVisible(find.byKey(const ValueKey('schedule-day-0')));
@@ -129,7 +131,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(requests.last.queryParameters['date'],
             isoDate(monday.add(const Duration(days: 7))));
-        expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
+        expect(find.byType(PrimaryButton), findsOneWidget);
         await tester.tap(find.byType(PrimaryButton));
         await tester.pumpAndSettle();
         expect(
@@ -174,7 +176,11 @@ void main() {
         await tester.pageBack();
         await tester.pumpAndSettle();
 
-        await tester.tap(find.text('Настройки'));
+        await tester.tap(find.text('Расписание'));
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.byTooltip('Настройки'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byTooltip('Настройки'));
         await tester.pumpAndSettle();
         expect(find.text('Иванов Иван Иванович'), findsOneWidget);
         expect(find.text('Личный кабинет'), findsNothing);

@@ -1990,7 +1990,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get aiTitle => 'Помощник';
+  String get aiTitle => 'UNIO AI';
 
   @override
   String get aiSubtitle => 'Расписание и документы вуза';
@@ -2320,4 +2320,8 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get aiOpenStatements => 'Открыть заявления';
+
+  @override
+  String get notificationPreferencesDescription =>
+      'Напоминания о парах и готовности заявлений. Разрешение на показ задаётся в настройках устройства.';
 }

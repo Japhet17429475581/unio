@@ -18,6 +18,10 @@ to retain local data; uninstalling can remove it.
 
 ## Features
 
+The app opens directly to the timetable. Student navigation is **Schedule |
+Grades | University | UNIO AI**; the original Settings screen is available from
+the timetable header. Grades load only when explicitly opened.
+
 - Student and teacher timetables, group search, and automatic background loading
   of both the current and following weeks into the device cache.
 - Guest access, direct Android university authentication, and a separate web

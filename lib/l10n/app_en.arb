@@ -576,7 +576,7 @@
   "checkNamedField": "Check the {p0} field.",
   "invalidNamedFile": "Invalid file: {p0}.",
   "portalStatus": "Portal status: {p0}",
-  "aiTitle": "Assistant",
+  "aiTitle": "UNIO AI",
   "aiSubtitle": "Schedule and university documents",
   "aiWelcome": "How can I help?",
   "aiIntro": "Find your classes and understand university documents, with sources you can check.",
@@ -678,8 +678,9 @@
   "aiContactsFollowup": "Who should I contact?",
   "aiEligibilityFollowup": "Who is eligible?",
   "aiNewsFollowup": "Show the latest news",
-  "aiTomorrowFirst": "What is my first class tomorrow?",
+  "aiTomorrowFirst": "What classes do I have tomorrow?",
   "aiHistoryBrowser": "Browser history may be lost when site data is cleared or private browsing ends.",
   "aiLegacy": "Message from a different app version",
-  "aiOpenStatements": "Open applications"
+  "aiOpenStatements": "Open applications",
+  "notificationPreferencesDescription": "Reminders for classes and completed applications. Display permission is controlled in your device settings."
 }

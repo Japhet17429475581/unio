@@ -1,13 +1,16 @@
+import '../widgets/unio_navigation_bar.dart';
 import '../services/locale_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../services/home_widget_service.dart';
 import '../services/analytics_service.dart';
-import '../widgets/unio_navigation_bar.dart';
+import '../services/schedule_repository.dart';
+import '../services/app_update_service.dart';
+import 'teacher_lesson_screen.dart';
 
 import '../widgets/tap_feedback.dart';
 import 'settings_tab.dart';
-import 'teacher_schedule_tab.dart';
+import 'schedule_tab.dart';
 import 'university_tab.dart';
 
 class TeacherHomeScreen extends StatefulWidget {
@@ -30,23 +33,33 @@ class TeacherHomeScreen extends StatefulWidget {
   State<TeacherHomeScreen> createState() => _TeacherHomeScreenState();
 }
 
-class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
+class _TeacherHomeScreenState extends State<TeacherHomeScreen>
+    with WidgetsBindingObserver {
   int _index = 0;
   bool _loggingOut = false;
+  final _scheduleKey = GlobalKey<ScheduleTabState>();
+  final _settingsChanges = ValueNotifier(0);
+  late final ScheduleRepository _schedule;
 
   @override
   void initState() {
     super.initState();
+    _schedule = ScheduleRepository(group: '', teacherFio: widget.fio);
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) unawaited(checkForAppUpdate(context));
+    });
+    analytics.screen(AnalyticsScreen.schedule, role: AnalyticsRole.teacher);
     homeWidget.openSchedule.addListener(_openSchedule);
     unawaited(homeWidget
         .select(value: widget.fio, teacher: true)
         .catchError((Object _) {}));
-    analytics.screen(AnalyticsScreen.schedule, role: AnalyticsRole.teacher);
   }
 
   Future<void> _logout() async {
     if (_loggingOut) return;
     setState(() => _loggingOut = true);
+    _settingsChanges.value++;
     try {
       await widget.onLogout();
     } catch (_) {
@@ -55,7 +68,10 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
         SnackBar(content: Text(l10n.uiCouldNotSignOutPleaseTryAgain)),
       );
     } finally {
-      if (mounted) setState(() => _loggingOut = false);
+      if (mounted) {
+        setState(() => _loggingOut = false);
+        _settingsChanges.value++;
+      }
     }
   }
 
@@ -66,7 +82,58 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
   @override
   void dispose() {
     homeWidget.openSchedule.removeListener(_openSchedule);
+    WidgetsBinding.instance.removeObserver(this);
+    _schedule.dispose();
+    _settingsChanges.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed)
+      unawaited(checkForAppUpdate(context));
+  }
+
+  @override
+  void didUpdateWidget(covariant TeacherHomeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _settingsChanges.value++;
+    });
+    if (oldWidget.fio != widget.fio) {
+      _schedule.select(group: '', teacherFio: widget.fio);
+      unawaited(homeWidget
+          .select(value: widget.fio, teacher: true)
+          .catchError((Object _) {}));
+    }
+  }
+
+  void _openSettings() => Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => ListenableBuilder(
+          listenable: _settingsChanges,
+          builder: (context, _) => Scaffold(
+                appBar: AppBar(toolbarHeight: 48),
+                body: SafeArea(
+                    child: Center(
+                        child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 640),
+                            child: SettingsTab.teacher(
+                                showHeader: true,
+                                onDelete: widget.onDelete,
+                                fio: widget.fio,
+                                darkMode: widget.darkMode,
+                                onDarkModeChanged: widget.onDarkModeChanged,
+                                onLogout: _loggingOut ? null : _logout,
+                                loggingOut: _loggingOut)))),
+              ))));
+
+  void _select(int index) {
+    if (index == _index) return;
+    analytics.screen(
+        index == 0 ? AnalyticsScreen.schedule : AnalyticsScreen.university,
+        role: AnalyticsRole.teacher);
+    tapFeedback();
+    setState(() => _index = index);
   }
 
   @override
@@ -74,54 +141,31 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
     Localizations.localeOf(context);
     return Scaffold(
       body: SafeArea(
-        child: IndexedStack(
-          index: _index,
-          children: [
-            TeacherScheduleTab(fio: widget.fio),
-            const UniversityTab.teacher(),
-            SettingsTab.teacher(
-              onDelete: widget.onDelete,
+        child: IndexedStack(index: _index, children: [
+          ScheduleTab.teacher(
+              key: _scheduleKey,
               fio: widget.fio,
-              darkMode: widget.darkMode,
-              onDarkModeChanged: widget.onDarkModeChanged,
-              onLogout: _loggingOut ? null : _logout,
-              loggingOut: _loggingOut,
-            ),
-          ],
-        ),
+              repository: _schedule,
+              onOpenSettings: _openSettings,
+              onLessonTap: (lesson) => Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (_) => TeacherLessonScreen(lesson: lesson)))),
+          const UniversityTab.teacher(),
+        ]),
       ),
       bottomNavigationBar: UnioNavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (index) {
-          if (index == _index) return;
-          analytics.screen(
-              const [
-                AnalyticsScreen.schedule,
-                AnalyticsScreen.university,
-                AnalyticsScreen.settings
-              ][index],
-              role: AnalyticsRole.teacher);
-          tapFeedback();
-          setState(() => _index = index);
-        },
-        destinations: [
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month_outlined),
-            selectedIcon: Icon(Icons.calendar_month_rounded),
-            label: l10n.uiSchedule,
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.account_balance_outlined),
-            selectedIcon: Icon(Icons.account_balance_rounded),
-            label: l10n.uiUniversity,
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings_rounded),
-            label: l10n.uiSettings,
-          ),
-        ],
-      ),
+          selectedIndex: _index,
+          onDestinationSelected: _select,
+          destinations: [
+            NavigationDestination(
+                icon: const Icon(Icons.calendar_month_outlined),
+                selectedIcon: const Icon(Icons.calendar_month_rounded),
+                label: l10n.uiSchedule),
+            NavigationDestination(
+                icon: const Icon(Icons.account_balance_outlined),
+                selectedIcon: const Icon(Icons.account_balance_rounded),
+                label: l10n.uiUniversity),
+          ]),
     );
   }
 }

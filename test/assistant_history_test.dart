@@ -574,7 +574,7 @@ void main() {
             darkMode: true,
             onDarkModeChanged: (_) {})));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('UNIO AI').first);
+    await tester.tap(find.text(l10n.aiTitle).last);
     await tester.pumpAndSettle();
     final screen = tester.widget<AssistantScreen>(find.byType(AssistantScreen));
     screen.conversation.messages.add(AssistantMessage.response(

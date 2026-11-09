@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/services.dart';
 import '../widgets/assistant_history_drawer.dart';
+import '../widgets/unio_ai_brand.dart';
+import '../widgets/unio_ai_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/lesson.dart';
@@ -17,6 +19,7 @@ import 'dart:math' as math;
 class AssistantScreen extends StatefulWidget {
   final AssistantConversation conversation;
   final String group;
+  final bool embedded;
   final ValueChanged<Lesson>? onLessonTap;
   final VoidCallback? onOpenRequests;
   final VoidCallback? onOpenGrades;
@@ -24,6 +27,7 @@ class AssistantScreen extends StatefulWidget {
       {super.key,
       required this.conversation,
       required this.group,
+      this.embedded = false,
       this.onLessonTap,
       this.onOpenRequests,
       this.onOpenGrades});
@@ -38,6 +42,7 @@ class _AssistantScreenState extends State<AssistantScreen>
   String? _latestQuestion;
   bool _initialScroll = true;
   final _input = TextEditingController();
+  final _inputFocus = FocusNode();
   final _scroll = ScrollController();
   bool _permissionOpen = false;
   AssistantConversation get chat => widget.conversation;
@@ -45,12 +50,17 @@ class _AssistantScreenState extends State<AssistantScreen>
   void initState() {
     super.initState();
     chat.addListener(_changed);
+    _inputFocus.addListener(_focusChanged);
     WidgetsBinding.instance.addObserver(this);
     unawaited(chat.initializeHistory());
     _input.text = chat.draft;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && chat.historyReady) _changed();
     });
+  }
+
+  void _focusChanged() {
+    if (mounted) setState(() {});
   }
 
   void _changed() {
@@ -91,6 +101,8 @@ class _AssistantScreenState extends State<AssistantScreen>
     WidgetsBinding.instance.removeObserver(this);
     unawaited(chat.flushHistory());
     _input.dispose();
+    _inputFocus.removeListener(_focusChanged);
+    _inputFocus.dispose();
     _scroll.dispose();
     super.dispose();
   }
@@ -183,198 +195,211 @@ class _AssistantScreenState extends State<AssistantScreen>
     final inputLines = ((availableHeight * .35) / media.textScaler.scale(22))
         .floor()
         .clamp(1, 5);
-    return Scaffold(
-      key: _scaffold,
-      backgroundColor: colors.surfaceContainerLowest,
-      drawer: AssistantHistoryDrawer(chat: chat),
-      appBar: AppBar(
-        backgroundColor: colors.surfaceContainerLowest,
-        surfaceTintColor: Colors.transparent,
-        centerTitle: true,
-        leading: IconButton(
-            tooltip: l10n.aiHistory,
-            icon: const Icon(Icons.menu_rounded),
-            onPressed: () {
-              FocusScope.of(context).unfocus();
-              _scaffold.currentState?.openDrawer();
-            }),
-        title: const Text('UNIO AI',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-        actions: [
-          IconButton(
-              tooltip: l10n.aiNewChat,
-              icon: const Icon(Icons.edit_square, size: 22),
-              onPressed: !chat.historyReady || chat.historyFailed
-                  ? null
-                  : () async {
-                      await chat.newChat();
-                    }),
-          const SizedBox(width: 6)
-        ],
-      ),
-      body: SafeArea(
-          top: false,
-          child: Center(
-              child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 760),
-            child: Column(children: [
-              if (chat.historyFailed)
-                ConstrainedBox(
-                    constraints: BoxConstraints(
-                        maxHeight: math.max(64, availableHeight * .32)),
-                    child: SingleChildScrollView(
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                            child: Column(children: [
-                              Text(l10n.aiHistoryFailure,
-                                  style: theme.textTheme.bodySmall?.copyWith(
-                                      color: colors.error, height: 1.4)),
-                              TextButton(
-                                  onPressed: chat.retryPersistence,
-                                  child: Text(l10n.aiHistoryRetry)),
-                            ])))),
-              Expanded(
-                  child: !chat.historyReady && chat.messages.isEmpty
-                      ? const Center(
-                          child: CircularProgressIndicator.adaptive())
-                      : chat.messages.isEmpty
-                          ? _empty()
-                          : ListView.builder(
-                              key: ValueKey(chat.session.id),
-                              controller: _scroll,
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 18, 20, 12),
-                              itemCount: chat.messages.length + 2,
-                              itemBuilder: (context, index) {
-                                if (index == 0)
-                                  return chat.olderMessages > 0
-                                      ? TextButton(
-                                          onPressed: () async {
-                                            final before = _scroll.hasClients
-                                                ? _scroll
-                                                    .position.maxScrollExtent
-                                                : 0.0;
-                                            final offset = _scroll.hasClients
-                                                ? _scroll.offset
-                                                : 0.0;
-                                            await chat.loadOlder();
-                                            WidgetsBinding.instance
-                                                .addPostFrameCallback((_) {
-                                              if (mounted && _scroll.hasClients)
-                                                _scroll.jumpTo(offset +
-                                                    _scroll.position
-                                                        .maxScrollExtent -
-                                                    before);
-                                            });
-                                          },
-                                          child: Text(l10n.aiLoadOlder))
-                                      : const SizedBox.shrink();
-                                if (index <= chat.messages.length) {
-                                  final message = chat.messages[index - 1];
-                                  return _Appear(
-                                      key: ValueKey(message.id),
-                                      child: _message(message));
-                                }
-                                return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      if (chat.busy)
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 16),
-                                            child: Row(children: [
-                                              const _ThinkingDots(),
-                                              const SizedBox(width: 12),
-                                              Flexible(
-                                                  child: Semantics(
-                                                      liveRegion: true,
-                                                      child: Text(
-                                                          switch (chat.stage) {
-                                                            'writing' =>
-                                                              l10n.aiWriting,
-                                                            'schedule_loading' =>
-                                                              l10n.aiLoadingSchedule,
-                                                            'grades_loading' =>
-                                                              l10n.aiLoadingGrades,
-                                                            _ =>
-                                                              l10n.aiSearching,
-                                                          },
-                                                          style: theme.textTheme
-                                                              .bodySmall
-                                                              ?.copyWith(
-                                                                  color: colors
-                                                                      .onSurfaceVariant)))),
-                                            ])),
-                                      if (!chat.busy &&
-                                          chat.messages.isNotEmpty)
-                                        _suggestions(_followups()),
-                                    ]);
-                              })),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-                  child: DecoratedBox(
-                      decoration: BoxDecoration(
-                          color: colors.surfaceContainer,
-                          borderRadius: BorderRadius.circular(26),
-                          border: Border.all(
-                              color: colors.outlineVariant
-                                  .withValues(alpha: .45))),
-                      child: Padding(
-                          padding: const EdgeInsets.fromLTRB(18, 5, 6, 5),
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                    child: TextField(
-                                        controller: _input,
-                                        enabled: chat.historyReady,
-                                        minLines: 1,
-                                        maxLines: inputLines,
-                                        maxLength: 800,
-                                        textCapitalization:
-                                            TextCapitalization.sentences,
-                                        textInputAction:
-                                            TextInputAction.newline,
-                                        style: theme.textTheme.bodyMedium,
-                                        decoration: InputDecoration(
-                                            hintText: l10n.aiInput,
-                                            border: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            filled: false,
-                                            counterText: '',
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    vertical: 12)),
-                                        onChanged: (value) {
-                                          chat.setDraft(value);
-                                          setState(() {});
-                                        })),
-                                const SizedBox(width: 6),
-                                Padding(
-                                    padding: const EdgeInsets.only(bottom: 3),
-                                    child: IconButton.filled(
-                                        tooltip: chat.busy
-                                            ? l10n.aiStop
-                                            : l10n.aiSend,
-                                        onPressed: chat.busy
-                                            ? chat.cancel
-                                            : _input.text.trim().length < 2
-                                                ? null
-                                                : () => _send(),
-                                        style: IconButton.styleFrom(
-                                            backgroundColor: colors.onSurface,
-                                            foregroundColor: colors.surface),
-                                        icon: Icon(
-                                            chat.busy
-                                                ? Icons.stop_rounded
-                                                : Icons.arrow_upward_rounded,
-                                            size: 21))),
-                              ])))),
-            ]),
-          ))),
+    return UnioAiMotion(
+        busy: chat.busy,
+        writing: chat.stage == 'writing',
+        child: Scaffold(
+          key: _scaffold,
+          resizeToAvoidBottomInset: !widget.embedded,
+          backgroundColor: colors.surfaceContainerLowest,
+          drawer: AssistantHistoryDrawer(chat: chat),
+          appBar: AppBar(
+            backgroundColor: colors.surfaceContainerLowest,
+            surfaceTintColor: Colors.transparent,
+            centerTitle: true,
+            leading: IconButton(
+                tooltip: l10n.aiHistory,
+                icon: const Icon(Icons.menu_rounded),
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  _scaffold.currentState?.openDrawer();
+                }),
+            title: const UnioAiWordmark(),
+            actions: [
+              IconButton(
+                  tooltip: l10n.aiNewChat,
+                  icon: const Icon(Icons.edit_square, size: 22),
+                  onPressed: !chat.historyReady || chat.historyFailed
+                      ? null
+                      : () async {
+                          await chat.newChat();
+                        }),
+              const SizedBox(width: 6)
+            ],
+          ),
+          body: UnioAiAtmosphere(
+              empty: chat.messages.isEmpty,
+              child: SafeArea(
+                  top: false,
+                  child: Center(
+                      child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 760),
+                    child: Column(children: [
+                      if (chat.historyFailed)
+                        ConstrainedBox(
+                            constraints: BoxConstraints(
+                                maxHeight: math.max(64, availableHeight * .32)),
+                            child: SingleChildScrollView(
+                                child: Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                                    child: Column(children: [
+                                      Text(l10n.aiHistoryFailure,
+                                          style: theme.textTheme.bodySmall
+                                              ?.copyWith(
+                                                  color: colors.error,
+                                                  height: 1.4)),
+                                      TextButton(
+                                          onPressed: chat.retryPersistence,
+                                          child: Text(l10n.aiHistoryRetry)),
+                                    ])))),
+                      Expanded(
+                          child: !chat.historyReady && chat.messages.isEmpty
+                              ? const Center(
+                                  child: CircularProgressIndicator.adaptive())
+                              : chat.messages.isEmpty
+                                  ? _empty()
+                                  : ListView.builder(
+                                      key: ValueKey(chat.session.id),
+                                      controller: _scroll,
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 18, 20, 12),
+                                      itemCount: chat.messages.length + 2,
+                                      itemBuilder: (context, index) {
+                                        if (index == 0)
+                                          return chat.olderMessages > 0
+                                              ? TextButton(
+                                                  onPressed: () async {
+                                                    final before =
+                                                        _scroll.hasClients
+                                                            ? _scroll.position
+                                                                .maxScrollExtent
+                                                            : 0.0;
+                                                    final offset =
+                                                        _scroll.hasClients
+                                                            ? _scroll.offset
+                                                            : 0.0;
+                                                    await chat.loadOlder();
+                                                    WidgetsBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) {
+                                                      if (mounted &&
+                                                          _scroll.hasClients)
+                                                        _scroll.jumpTo(offset +
+                                                            _scroll.position
+                                                                .maxScrollExtent -
+                                                            before);
+                                                    });
+                                                  },
+                                                  child: Text(l10n.aiLoadOlder))
+                                              : const SizedBox.shrink();
+                                        if (index <= chat.messages.length) {
+                                          final message =
+                                              chat.messages[index - 1];
+                                          return _Appear(
+                                              key: ValueKey(message.id),
+                                              child: _message(message));
+                                        }
+                                        return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              if (chat.busy) _thinking(),
+                                              if (!chat.busy &&
+                                                  chat.messages.isNotEmpty)
+                                                _suggestions(_followups()),
+                                            ]);
+                                      })),
+                      _composer(inputLines),
+                    ]),
+                  )))),
+        ));
+  }
+
+  Widget _thinking() {
+    final status = switch (chat.stage) {
+      'writing' => l10n.aiWriting,
+      'schedule_loading' => l10n.aiLoadingSchedule,
+      'grades_loading' => l10n.aiLoadingGrades,
+      _ => l10n.aiSearching,
+    };
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(children: [
+        const UnioAiMark(size: 24),
+        const SizedBox(width: 12),
+        Flexible(
+            child: Semantics(
+                liveRegion: true,
+                child: AnimatedSwitcher(
+                  duration: MediaQuery.disableAnimationsOf(context)
+                      ? Duration.zero
+                      : const Duration(milliseconds: 180),
+                  child: Text(status,
+                      key: ValueKey(chat.stage),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant)),
+                ))),
+      ]),
     );
+  }
+
+  Widget _composer(int inputLines) {
+    final theme = Theme.of(context), colors = theme.colorScheme;
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+        child: UnioAiComposerSurface(
+            focused: _inputFocus.hasFocus,
+            child: Padding(
+                padding: const EdgeInsets.fromLTRB(18, 5, 6, 5),
+                child:
+                    Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                  Expanded(
+                      child: TextField(
+                          controller: _input,
+                          focusNode: _inputFocus,
+                          enabled: chat.historyReady,
+                          minLines: 1,
+                          maxLines: inputLines,
+                          maxLength: 800,
+                          textCapitalization: TextCapitalization.sentences,
+                          textInputAction: TextInputAction.newline,
+                          style: theme.textTheme.bodyMedium,
+                          decoration: InputDecoration(
+                              hintText: l10n.aiInput,
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              filled: false,
+                              counterText: '',
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 12)),
+                          onChanged: (value) {
+                            chat.setDraft(value);
+                            setState(() {});
+                          })),
+                  const SizedBox(width: 6),
+                  Padding(
+                      padding: const EdgeInsets.only(bottom: 3),
+                      child: IconButton.filled(
+                          tooltip: chat.busy ? l10n.aiStop : l10n.aiSend,
+                          onPressed: !chat.historyReady
+                              ? null
+                              : chat.busy
+                                  ? chat.cancel
+                                  : _input.text.trim().length < 2
+                                      ? null
+                                      : () => _send(),
+                          style: IconButton.styleFrom(
+                              backgroundColor: colors.primary,
+                              foregroundColor: colors.onPrimary),
+                          icon: Icon(
+                              chat.busy
+                                  ? Icons.stop_rounded
+                                  : Icons.arrow_upward_rounded,
+                              size: 21))),
+                ]))));
   }
 
   List<String> _followups() {
@@ -405,18 +430,17 @@ class _AssistantScreenState extends State<AssistantScreen>
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.auto_awesome_rounded,
-                        size: 32,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Theme.of(context).colorScheme.onSurface),
-                    const SizedBox(height: 22),
+                    const UnioAiMark(size: 66),
+                    const SizedBox(height: 24),
                     Text(l10n.aiWelcome,
                         textAlign: TextAlign.center,
                         style: Theme.of(context)
                             .textTheme
-                            .titleLarge
-                            ?.copyWith(fontWeight: FontWeight.w600)),
+                            .headlineSmall
+                            ?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: -.6,
+                                height: 1.2)),
                     const SizedBox(height: 26),
                     _suggestions([
                       l10n.aiTomorrowFirst,
@@ -477,137 +501,139 @@ class _AssistantScreenState extends State<AssistantScreen>
               margin: const EdgeInsets.only(left: 40, bottom: 24),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
               decoration: BoxDecoration(
-                  color: c.surfaceContainerHigh,
-                  borderRadius: BorderRadius.circular(22)),
+                  color: c.primaryContainer.withValues(alpha: dark ? .65 : .8),
+                  borderRadius: BorderRadius.circular(18)),
               child: SelectableText(item.question!,
                   style: theme.textTheme.bodyMedium?.copyWith(height: 1.5))));
     final data = item.response ?? {}, status = data['status'];
     if (status == 'pending') return const SizedBox.shrink();
     return Padding(
         padding: const EdgeInsets.only(bottom: 26),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Icon(Icons.auto_awesome_rounded,
-                  color: dark ? Colors.white : c.onSurface, size: 19)),
-          if (status == 'answered') ...[
-            for (final (i, claim) in (data['claims'] as List? ?? []).indexed)
-              _Appear(
-                  key: ValueKey('claim-$i'),
-                  child: Padding(
-                      padding: const EdgeInsets.only(bottom: 14),
-                      child: _answerText('${claim['text']}'))),
-            if (_linkedSources(data).isNotEmpty)
-              Theme(
-                  data: theme.copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                      tilePadding: EdgeInsets.zero,
-                      dense: true,
-                      visualDensity: VisualDensity.compact,
-                      title: Text(
-                          '${l10n.aiSources} · ${_linkedSources(data).length}',
-                          style: theme.textTheme.labelMedium
-                              ?.copyWith(color: c.onSurfaceVariant)),
-                      children: [
-                        for (final source in _linkedSources(data))
-                          _source(Map<String, dynamic>.from(source), data),
-                        Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: Text(l10n.aiSourceNotice,
-                                style: theme.textTheme.bodySmall
-                                    ?.copyWith(color: c.onSurfaceVariant)))
-                      ])),
-          ] else if (status == 'grades') ...[
-            Text(l10n.aiGradesFromPortal,
-                style: theme.textTheme.bodySmall
-                    ?.copyWith(color: c.onSurfaceVariant)),
-            const SizedBox(height: 12),
-            for (final row in data['subjects'] as List) ...[
-              Text(
-                  (row['semester'] as int) == 0
-                      ? l10n.uiNoSemester
-                      : l10n.uiSemester('${row['semester']}'),
-                  style: theme.textTheme.labelMedium
-                      ?.copyWith(color: c.onSurfaceVariant)),
-              const SizedBox(height: 8),
-              SubjectCard(
-                  key: PageStorageKey(
-                      'ai-${identityHashCode(item)}-${row['semester']}-${row['subject']}'),
-                  subject:
-                      PortalSubject.fromJson(Map<String, dynamic>.from(row)),
-                  initiallyExpanded: true),
-              const SizedBox(height: 16),
-            ],
-            _openGrades(),
-          ] else if ('$status'.startsWith('grades_')) ...[
-            Text(_status(status),
-                style: theme.textTheme.bodyMedium?.copyWith(height: 1.65)),
-            const SizedBox(height: 12),
-            _openGrades(),
-          ] else if (status == 'news') ...[
-            Text(
-                data['date'] == null
-                    ? l10n.aiNewsLatest
-                    : l10n.aiNewsOnDate(_date('${data['date']}')),
-                style: theme.textTheme.bodyMedium?.copyWith(height: 1.6)),
-            const SizedBox(height: 12),
-            if ((data['items'] as List? ?? []).isEmpty) Text(l10n.aiNewsEmpty),
-            for (final row in (data['items'] as List? ?? []))
-              _news(Map<String, dynamic>.from(row)),
-            if (data['has_more'] == true)
-              TextButton.icon(
-                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const NewsListScreen())),
-                  icon: const Icon(Icons.article_outlined, size: 18),
-                  label: Text(l10n.aiAllNews)),
-          ] else if (status == 'requests_help') ...[
-            Text(l10n.aiRequestsHelp,
-                style: theme.textTheme.bodyMedium?.copyWith(height: 1.65)),
-            const SizedBox(height: 14),
-            if (data['action'] == 'open_requests' &&
-                widget.onOpenRequests != null)
-              FilledButton.tonalIcon(
-                  onPressed: widget.onOpenRequests,
-                  icon: const Icon(Icons.edit_document, size: 19),
-                  label: Text(l10n.uiCertificatesAndApplications)),
-            TextButton.icon(
-                onPressed: () async {
-                  try {
-                    await launchUrl(Uri.https('portal.vspu.ru'),
-                        mode: LaunchMode.externalApplication);
-                  } catch (_) {
-                    if (mounted)
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.aiUnavailable)));
-                  }
-                },
-                icon: const Icon(Icons.open_in_new_rounded, size: 17),
-                label: Text(l10n.aiOpenPortal)),
-          ] else if (status == 'schedule') ...[
-            Text('${data['date']} · ${data['group']}',
-                style: theme.textTheme.bodyMedium?.copyWith(height: 1.6)),
-            const SizedBox(height: 12),
-            if ((data['lessons'] as List).isEmpty) Text(l10n.aiNoLessons),
-            for (final (i, row) in (data['lessons'] as List).indexed)
-              _Appear(
-                  delay: i * 55,
-                  child:
-                      _lesson(Lesson.fromJson(Map<String, dynamic>.from(row)))),
-          ] else if (status == 'legacy') ...[
-            Text(l10n.aiLegacy, style: theme.textTheme.labelSmall),
-            const SizedBox(height: 8),
-            _answerText('${data['fallback_text'] ?? ''}'),
-          ] else
-            Text(_status(status),
-                style: theme.textTheme.bodyMedium?.copyWith(height: 1.6)),
-          if (item.delivery == 'interrupted' && status != 'interrupted')
-            Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text(l10n.aiInterrupted,
+        child: Material(
+            type: MaterialType.transparency,
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              if (status == 'answered') ...[
+                for (final (i, claim)
+                    in (data['claims'] as List? ?? []).indexed)
+                  _Appear(
+                      key: ValueKey('claim-$i'),
+                      child: Padding(
+                          padding: const EdgeInsets.only(bottom: 14),
+                          child: _answerText('${claim['text']}'))),
+                if (_linkedSources(data).isNotEmpty)
+                  Theme(
+                      data: theme.copyWith(dividerColor: Colors.transparent),
+                      child: ExpansionTile(
+                          tilePadding: EdgeInsets.zero,
+                          dense: true,
+                          visualDensity: VisualDensity.compact,
+                          title: Text(
+                              '${l10n.aiSources} · ${_linkedSources(data).length}',
+                              style: theme.textTheme.labelMedium
+                                  ?.copyWith(color: c.onSurfaceVariant)),
+                          children: [
+                            for (final source in _linkedSources(data))
+                              _source(Map<String, dynamic>.from(source), data),
+                            Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: Text(l10n.aiSourceNotice,
+                                    style: theme.textTheme.bodySmall
+                                        ?.copyWith(color: c.onSurfaceVariant)))
+                          ])),
+              ] else if (status == 'grades') ...[
+                Text(l10n.aiGradesFromPortal,
                     style: theme.textTheme.bodySmall
-                        ?.copyWith(color: c.onSurfaceVariant, height: 1.4))),
-          if (item.delivery != 'streaming') _actions(item),
-        ]));
+                        ?.copyWith(color: c.onSurfaceVariant)),
+                const SizedBox(height: 12),
+                for (final row in data['subjects'] as List) ...[
+                  Text(
+                      (row['semester'] as int) == 0
+                          ? l10n.uiNoSemester
+                          : l10n.uiSemester('${row['semester']}'),
+                      style: theme.textTheme.labelMedium
+                          ?.copyWith(color: c.onSurfaceVariant)),
+                  const SizedBox(height: 8),
+                  SubjectCard(
+                      key: PageStorageKey(
+                          'ai-${identityHashCode(item)}-${row['semester']}-${row['subject']}'),
+                      subject: PortalSubject.fromJson(
+                          Map<String, dynamic>.from(row)),
+                      initiallyExpanded: true),
+                  const SizedBox(height: 16),
+                ],
+                _openGrades(),
+              ] else if ('$status'.startsWith('grades_')) ...[
+                Text(_status(status),
+                    style: theme.textTheme.bodyMedium?.copyWith(height: 1.65)),
+                const SizedBox(height: 12),
+                _openGrades(),
+              ] else if (status == 'news') ...[
+                Text(
+                    data['date'] == null
+                        ? l10n.aiNewsLatest
+                        : l10n.aiNewsOnDate(_date('${data['date']}')),
+                    style: theme.textTheme.bodyMedium?.copyWith(height: 1.6)),
+                const SizedBox(height: 12),
+                if ((data['items'] as List? ?? []).isEmpty)
+                  Text(l10n.aiNewsEmpty),
+                for (final row in (data['items'] as List? ?? []))
+                  _news(Map<String, dynamic>.from(row)),
+                if (data['has_more'] == true)
+                  TextButton.icon(
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (_) => const NewsListScreen())),
+                      icon: const Icon(Icons.article_outlined, size: 18),
+                      label: Text(l10n.aiAllNews)),
+              ] else if (status == 'requests_help') ...[
+                Text(l10n.aiRequestsHelp,
+                    style: theme.textTheme.bodyMedium?.copyWith(height: 1.65)),
+                const SizedBox(height: 14),
+                if (data['action'] == 'open_requests' &&
+                    widget.onOpenRequests != null)
+                  FilledButton.tonalIcon(
+                      onPressed: widget.onOpenRequests,
+                      icon: const Icon(Icons.edit_document, size: 19),
+                      label: Text(l10n.uiCertificatesAndApplications)),
+                TextButton.icon(
+                    onPressed: () async {
+                      try {
+                        await launchUrl(Uri.https('portal.vspu.ru'),
+                            mode: LaunchMode.externalApplication);
+                      } catch (_) {
+                        if (mounted)
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l10n.aiUnavailable)));
+                      }
+                    },
+                    icon: const Icon(Icons.open_in_new_rounded, size: 17),
+                    label: Text(l10n.aiOpenPortal)),
+              ] else if (status == 'schedule') ...[
+                Text('${data['date']} · ${data['group']}',
+                    style: theme.textTheme.bodyMedium?.copyWith(height: 1.6)),
+                const SizedBox(height: 12),
+                if ((data['lessons'] as List).isEmpty) Text(l10n.aiNoLessons),
+                for (final (i, row) in (data['lessons'] as List).indexed)
+                  _Appear(
+                      delay: i * 55,
+                      child: _lesson(
+                          Lesson.fromJson(Map<String, dynamic>.from(row)))),
+              ] else if (status == 'legacy') ...[
+                Text(l10n.aiLegacy, style: theme.textTheme.labelSmall),
+                const SizedBox(height: 8),
+                _answerText('${data['fallback_text'] ?? ''}'),
+              ] else
+                Text(_status(status),
+                    style: theme.textTheme.bodyMedium?.copyWith(height: 1.6)),
+              if (item.delivery == 'interrupted' && status != 'interrupted')
+                Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(l10n.aiInterrupted,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                            color: c.onSurfaceVariant, height: 1.4))),
+              if (item.delivery != 'streaming') _actions(item),
+            ])));
   }
 
   Widget _answerText(String value) {
@@ -866,11 +892,31 @@ class _AssistantScreenState extends State<AssistantScreen>
           quotes.add(e['quote'] as String);
       }
     }
-    return Padding(
-        padding: const EdgeInsets.only(bottom: 16),
+    final colors = Theme.of(context).colorScheme;
+    return Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+            color: colors.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(16),
+            border:
+                Border.all(color: colors.outlineVariant.withValues(alpha: .6))),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('${source['title']}',
-              style: Theme.of(context).textTheme.labelLarge),
+          Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Icon(Icons.description_outlined, size: 20, color: colors.primary),
+            const SizedBox(width: 10),
+            Expanded(
+                child: Text('${source['title']}',
+                    style: Theme.of(context).textTheme.labelLarge)),
+          ]),
+          if (_sourceUrl(source['source_url']) case final Uri url) ...[
+            const SizedBox(height: 4),
+            Text(url.host,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(color: Theme.of(context).colorScheme.primary)),
+          ],
           if (source['page'] != null) ...[
             const SizedBox(height: 5),
             Text('${l10n.aiPage} ${source['page']}',
@@ -932,58 +978,6 @@ class _AssistantScreenState extends State<AssistantScreen>
         'busy' => l10n.aiBusy,
         _ => l10n.aiUnavailable,
       };
-}
-
-class _ThinkingDots extends StatefulWidget {
-  const _ThinkingDots();
-  @override
-  State<_ThinkingDots> createState() => _ThinkingDotsState();
-}
-
-class _ThinkingDotsState extends State<_ThinkingDots>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _animation = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 1200));
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (MediaQuery.of(context).disableAnimations ||
-        !TickerMode.valuesOf(context).enabled) {
-      _animation.stop();
-    } else {
-      _animation.repeat();
-    }
-  }
-
-  @override
-  void dispose() {
-    _animation.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-      animation: _animation,
-      builder: (context, _) => Row(mainAxisSize: MainAxisSize.min, children: [
-            for (var i = 0; i < 3; i++)
-              Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: Opacity(
-                      opacity: MediaQuery.of(context).disableAnimations
-                          ? 0.6
-                          : .35 +
-                              .65 *
-                                  ((math.sin(_animation.value * math.pi * 2 -
-                                              i * .85) +
-                                          1) /
-                                      2),
-                      child: Container(
-                          width: 6,
-                          height: 6,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Theme.of(context).colorScheme.primary)))),
-          ]));
 }
 
 class _Appear extends StatelessWidget {

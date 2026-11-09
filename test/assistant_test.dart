@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:unio_app/widgets/unio_ai_brand.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -168,8 +169,8 @@ void main() {
     final size = tester.getSize(find.byType(IconButton));
     expect(size.width, greaterThanOrEqualTo(48));
     expect(size.height, greaterThanOrEqualTo(48));
-    expect(tester.widget<Icon>(find.byIcon(Icons.auto_awesome_rounded)).color,
-        Colors.white);
+    expect(find.byType(UnioAiMark), findsOneWidget);
+    expect(tester.getSize(find.byType(UnioAiMark)), const Size(24, 24));
     expect(
         tester
             .widget<IconButton>(find.byType(IconButton))

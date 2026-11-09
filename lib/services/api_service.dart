@@ -34,6 +34,7 @@ Future<List<Lesson>> fetchLessons(
   bool week = false,
   bool refresh = false,
   bool allowCacheFallback = true,
+  void Function()? onCacheFallback,
 }) async {
   final cacheKey = _cacheKey(
     group: group,
@@ -96,7 +97,10 @@ Future<List<Lesson>> fetchLessons(
       final saved = _parseLessons(cached);
       // An old empty response cannot establish that the week has no lessons
       // while the current request is failing.
-      if (saved.isNotEmpty) return saved;
+      if (saved.isNotEmpty) {
+        onCacheFallback?.call();
+        return saved;
+      }
     }
 
     if (e is ApiException) {

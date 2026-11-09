@@ -180,27 +180,35 @@ void main() {
     await http.runWithClient(() async {
       await tester.pumpWidget(const App());
       await tester.pumpAndSettle();
-      expect(tester.widget<HomeScreen>(find.byType(HomeScreen)).group, 'NEW');
-      tester
-          .widget<UnioNavigationBar>(find.byType(UnioNavigationBar))
-          .onDestinationSelected!(3);
+      expect(
+          tester
+              .widget<HomeScreen>(find.byType(HomeScreen, skipOffstage: false))
+              .group,
+          'NEW');
+      await tester.tap(find.byTooltip('Настройки'));
       await tester.pumpAndSettle();
-      final state = tester.state(find.byType(HomeScreen));
-      final upgrade =
-          tester.widget<HomeScreen>(find.byType(HomeScreen)).onUpgradeToPortal;
+      final state = tester.state(find.byType(HomeScreen, skipOffstage: false));
+      final upgrade = tester
+          .widget<HomeScreen>(find.byType(HomeScreen, skipOffstage: false))
+          .onUpgradeToPortal;
       await tester.runAsync(() => http.runWithClient(
           () => upgrade('test-login', 'test-password'),
           () => MockClient(
               (_) async => http.Response('{"groups":["OLD","NEW"]}', 200))));
       await tester.pumpAndSettle();
-      expect(tester.state(find.byType(HomeScreen)), same(state));
-      expect(tester.widget<HomeScreen>(find.byType(HomeScreen)).isPortalMode,
+      expect(tester.state(find.byType(HomeScreen, skipOffstage: false)),
+          same(state));
+      expect(
+          tester
+              .widget<HomeScreen>(find.byType(HomeScreen, skipOffstage: false))
+              .isPortalMode,
           isTrue);
       expect(
           tester
-              .widget<UnioNavigationBar>(find.byType(UnioNavigationBar))
+              .widget<UnioNavigationBar>(
+                  find.byType(UnioNavigationBar, skipOffstage: false))
               .selectedIndex,
-          3);
+          0);
       expect((await loadSession())!.accountToken, 'test-token');
       expect((await loadSession())!.accountGroup, isNull);
       await tester.pumpWidget(const SizedBox());
@@ -242,14 +250,16 @@ void main() {
         })));
         await tester.pumpAndSettle();
         tester
-            .widget<UnioNavigationBar>(find.byType(UnioNavigationBar))
+            .widget<UnioNavigationBar>(
+                find.byType(UnioNavigationBar, skipOffstage: false))
             .onDestinationSelected!(tab);
         await tester.pumpAndSettle();
         update(() => portal = true);
         await tester.pumpAndSettle();
         expect(
             tester
-                .widget<UnioNavigationBar>(find.byType(UnioNavigationBar))
+                .widget<UnioNavigationBar>(
+                    find.byType(UnioNavigationBar, skipOffstage: false))
                 .selectedIndex,
             tab);
         await tester.pumpWidget(const SizedBox());
