@@ -23,7 +23,8 @@ class TeacherSchedule {
       throw const FormatException('Некорректное расписание преподавателя');
     }
     return TeacherSchedule(
-      fromLocalCache: fromLocalCache,
+      fromLocalCache:
+          fromLocalCache || (json['cache'] as Map?)?['source'] == 'stale',
       lessons: lessons
           .map((item) => Lesson.fromJson(item as Map<String, dynamic>))
           .toList()

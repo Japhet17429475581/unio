@@ -7,14 +7,19 @@ import 'teachers_service.dart';
 /// A session-scoped view of the existing timetable API and on-device cache.
 /// Timetable consumers reuse the same in-flight request for each week.
 class ScheduleRepository extends ChangeNotifier {
-  ScheduleRepository({required String group, String? teacherFio})
-      : _group = group,
+  ScheduleRepository(
+      {required String group, String? teacherFio, DateTime Function()? clock})
+      : _clock = clock ?? DateTime.now,
+        _group = group,
         _teacherFio = teacherFio;
 
+  final DateTime Function() _clock;
   String _group;
   String? _teacherFio;
   final _weeks = <String, Future<List<Lesson>>>{};
   final _saved = <String>{};
+  final _loadedAt = <String, DateTime>{};
+  static const freshness = Duration(minutes: 5);
   final _loading = <String>{};
   int _generation = 0;
   bool _disposed = false;
@@ -23,12 +28,50 @@ class ScheduleRepository extends ChangeNotifier {
 
   Future<List<Lesson>> week(DateTime date) {
     final start = mondayOf(date);
-    return _weeks.putIfAbsent(isoDate(start), () => _request(start));
+    final key = isoDate(start);
+    final previous = _weeks[key];
+    if (previous != null &&
+        !_loading.contains(key) &&
+        _clock().difference(_loadedAt[key] ?? DateTime(1970)) >= freshness) {
+      _reload(start);
+      return previous;
+    }
+    return _weeks.putIfAbsent(key, () => _request(start));
   }
 
   void prefetch(DateTime date) {
     week(date).ignore();
     week(date.add(const Duration(days: 7))).ignore();
+  }
+
+  void revalidate(DateTime date) {
+    for (final day in [date, date.add(const Duration(days: 7))]) {
+      final start = mondayOf(day);
+      final key = isoDate(start);
+      if (!_loading.contains(key) &&
+          _clock().difference(_loadedAt[key] ?? DateTime(1970)) >= freshness) {
+        _reload(start);
+      }
+    }
+  }
+
+  void _reload(DateTime start) {
+    final key = isoDate(start);
+    final previous = _weeks[key];
+    final generation = _generation;
+    final request = _request(start);
+    if (previous == null) _weeks[key] = request;
+    request.then((lessons) {
+      if (_disposed || generation != _generation) return;
+      _weeks[key] = Future.value(lessons);
+      notifyListeners();
+    }, onError: (Object _, StackTrace __) {
+      if (!_disposed && generation == _generation && previous != null) {
+        _weeks[key] = previous;
+        // Back off after failure while preserving the last usable timetable.
+        _loadedAt[key] = _clock();
+      }
+    });
   }
 
   Future<List<Lesson>> refresh(DateTime date) {
@@ -50,6 +93,7 @@ class ScheduleRepository extends ChangeNotifier {
     _teacherFio = teacherFio;
     _generation++;
     _weeks.clear();
+    _loadedAt.clear();
     _saved.clear();
     _loading.clear();
     notifyListeners();
@@ -76,10 +120,17 @@ class ScheduleRepository extends ChangeNotifier {
         saved = result.fromLocalCache;
       }
       if (!_disposed && generation == _generation) {
+        _loadedAt[key] = _clock();
         saved ? _saved.add(key) : _saved.remove(key);
         notifyListeners();
       }
       return lessons;
+    } catch (_) {
+      if (generation == _generation) {
+        _weeks.remove(key);
+        _loadedAt[key] = _clock();
+      }
+      rethrow;
     } finally {
       if (generation == _generation) _loading.remove(key);
     }

@@ -66,6 +66,7 @@ Future<List<Lesson>> fetchLessons(
 
     final data = jsonDecode(body) as Map<String, dynamic>;
 
+    if ((data['cache'] as Map?)?['source'] == 'stale') onCacheFallback?.call();
     final lessonsJson = data['lessons'];
 
     if (lessonsJson is! List) {

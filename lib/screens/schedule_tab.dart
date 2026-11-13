@@ -116,6 +116,7 @@ class ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
 
   void _checkDay() {
     final now = widget.clock();
+    _repository.revalidate(now);
     if (isoDate(now) != isoDate(_today)) {
       setState(() {
         _today = now;
@@ -134,6 +135,7 @@ class ScheduleTabState extends State<ScheduleTab> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _checkDay();
+      _repository.revalidate(widget.clock());
       _watchDay();
     } else {
       _dayTimer?.cancel();

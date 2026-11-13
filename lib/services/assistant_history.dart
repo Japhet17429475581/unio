@@ -49,6 +49,9 @@ class AssistantHistory {
   List<ChatSession> sessions = [];
   String? selectedId;
   final Map<String, String> _encoded = {};
+  final Map<String, Object> _fingerprints = {};
+  final Map<String, String> _searchText = {};
+  int _searchGeneration = 0;
   Future<void> _queue = Future.value();
   bool closed = false;
   AssistantHistory(this.owner, {ChatStorage? storage})
@@ -85,16 +88,19 @@ class AssistantHistory {
         'sessions': sessions.map((s) => s.toJson()).toList()
       }));
   Future<List<AssistantMessage>> messages(ChatSession chat,
-      {int? before, int limit = 60}) async {
+      {int? before, int limit = 60, bool Function()? cancelled}) async {
     final end = before ?? chat.messageIds.length;
     final start = (end - limit).clamp(0, end);
     final result = <AssistantMessage>[];
     for (final id in chat.messageIds.sublist(start, end)) {
+      if (cancelled?.call() == true) break;
       final raw = await storage.read(_key(chat.id, id));
       if (raw == null) continue;
       try {
-        result.add(AssistantMessage.fromJson(
-            Map<String, dynamic>.from(jsonDecode(raw) as Map)));
+        final message = AssistantMessage.fromJson(
+            Map<String, dynamic>.from(jsonDecode(raw) as Map));
+        result.add(message);
+        _rememberText(_key(chat.id, id), message.text);
       } catch (_) {
         result.add(AssistantMessage.fromJson({
           'id': id,
@@ -108,14 +114,29 @@ class AssistantHistory {
     return result;
   }
 
+  void _rememberText(String key, String text) {
+    _searchText[key] = text.toLowerCase();
+    if (_searchText.length > 600) _searchText.remove(_searchText.keys.first);
+  }
+
   Future<void> save(ChatSession chat, List<AssistantMessage> messages,
       {required String draft,
       required String context,
       required bool gradesContext}) {
     // Capture NOW, before awaiting: switching chats must not change this write.
-    final encoded = {for (final m in messages) m.id: jsonEncode(m.toJson())};
+    final encoded = <String, String>{};
+    for (final m in messages) {
+      final key = _key(chat.id, m.id);
+      final fingerprint =
+          (m.updatedAt, m.response, m.feedback, m.delivery, m.question);
+      if (_fingerprints[key] != fingerprint || !_encoded.containsKey(key)) {
+        encoded[m.id] = jsonEncode(m.toJson());
+        _fingerprints[key] = fingerprint;
+      }
+      _rememberText(key, m.text);
+    }
     final ids = List<String>.of(chat.messageIds);
-    for (final id in encoded.keys) {
+    for (final id in messages.map((m) => m.id)) {
       if (!ids.contains(id)) ids.add(id);
     }
     final meta = ChatSession.fromJson(chat.toJson())..messageIds = ids;
@@ -130,6 +151,11 @@ class AssistantHistory {
         if (_encoded[key] != entry.value) {
           await storage.write(key, entry.value);
           _encoded[key] = entry.value;
+          if (_encoded.length > 600) {
+            final oldest = _encoded.keys.first;
+            _encoded.remove(oldest);
+            _fingerprints.remove(oldest);
+          }
         }
       }
       await storage.write('${prefix}_${chat.id}_state', state);
@@ -164,23 +190,39 @@ class AssistantHistory {
         for (final key in await storage.keys('${prefix}_${chat.id}_')) {
           await storage.delete(key);
           _encoded.remove(key);
+          _fingerprints.remove(key);
+          _searchText.remove(key);
         }
         sessions.removeWhere((s) => s.id == chat.id);
         if (selectedId == chat.id) selectedId = null;
         await _index();
       });
+  void cancelSearch() => _searchGeneration++;
+
   Future<List<ChatSession>> search(String query) async {
+    final generation = ++_searchGeneration;
     await _queue;
     final q = query.trim().toLowerCase();
     final result = <ChatSession>[];
     for (final chat in List<ChatSession>.of(sessions)) {
+      if (closed || generation != _searchGeneration) return [];
       if (q.isEmpty ||
           '${chat.title} ${chat.preview}'.toLowerCase().contains(q)) {
         result.add(chat);
         continue;
       }
+      if (chat.messageIds
+          .every((id) => _searchText.containsKey(_key(chat.id, id)))) {
+        if (chat.messageIds
+            .any((id) => _searchText[_key(chat.id, id)]!.contains(q)))
+          result.add(chat);
+        continue;
+      }
       for (var end = chat.messageIds.length; end > 0; end -= 60) {
-        final page = await messages(chat, before: end);
+        final page = await messages(chat,
+            before: end,
+            cancelled: () => closed || generation != _searchGeneration);
+        if (closed || generation != _searchGeneration) return [];
         if (page.any((m) => m.text.toLowerCase().contains(q))) {
           result.add(chat);
           break;
@@ -197,12 +239,18 @@ class AssistantHistory {
         sessions.clear();
         selectedId = null;
         _encoded.clear();
+        _fingerprints.clear();
+        _searchText.clear();
+        _searchGeneration++;
         await _index();
       });
   Future<void> flush() => _queue;
   void close() {
     closed = true;
     _encoded.clear();
+    _fingerprints.clear();
+    _searchText.clear();
+    _searchGeneration++;
     sessions.clear();
   }
 }

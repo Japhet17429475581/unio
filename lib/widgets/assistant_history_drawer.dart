@@ -37,6 +37,7 @@ class _HistoryState extends State<AssistantHistoryDrawer> {
 
   void _find(String value) {
     final generation = ++_searchVersion;
+    chat.history?.cancelSearch();
     _timer?.cancel();
     _timer = Timer(const Duration(milliseconds: 250), () async {
       try {

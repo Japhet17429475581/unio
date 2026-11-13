@@ -44,6 +44,51 @@ void main() {
     await appLocale.load();
   });
 
+  test('A failed prefetch is retried when the week is opened', () async {
+    var calls = 0;
+    final repository = ScheduleRepository(group: 'TEST');
+    final day = DateTime(2026, 11, 9);
+    await http.runWithClient(() async {
+      await expectLater(repository.week(day), throwsA(anything));
+      expect(await repository.week(day), isNotEmpty);
+      expect(calls, 2);
+      repository.dispose();
+    },
+        () => MockClient((request) async {
+              calls++;
+              return calls == 1
+                  ? http.Response('offline', 503)
+                  : weekResponse(request.url);
+            }));
+  });
+
+  test('Old weeks stay visible while revalidating without duplicate requests',
+      () async {
+    var now = DateTime(2026, 11, 9);
+    var calls = 0;
+    final repository = ScheduleRepository(group: 'TEST', clock: () => now);
+    final reload = Completer<http.Response>();
+    final uri = Uri.parse('https://example.test/?date=2026-11-09&group=TEST');
+    await http.runWithClient(() async {
+      final original = repository.week(now);
+      await original;
+      now = now.add(const Duration(minutes: 6));
+      expect(identical(repository.week(now), original), isTrue);
+      expect(identical(repository.week(now), original), isTrue);
+      reload.complete(weekResponse(uri));
+      await Future<void>.delayed(Duration.zero);
+      expect(calls, 2);
+      expect(await repository.week(now), isNotEmpty);
+      repository.dispose();
+    },
+        () => MockClient((request) async {
+              calls++;
+              return calls == 1
+                  ? weekResponse(request.url)
+                  : await reload.future;
+            }));
+  });
+
   test('Both prefetched weeks and refresh reuse pending requests', () async {
     final calls = <Uri>[];
     final repository = ScheduleRepository(group: 'TEST');
