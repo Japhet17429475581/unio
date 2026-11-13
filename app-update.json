@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.0-beta.15",
-  "versionCode": 16,
-  "apkUrl": "https://github.com/Japhet17429475581/unio/releases/download/v1.0.0-beta.15/UNIO-1.0.0-beta.15-universal.apk",
-  "notesRu": "Четыре вкладки: Расписание, Успеваемость, Университет и UNIO AI. Вернули прежний значок AI с тремя искрами, добавили мягкие анимации ожидания. Настройки открываются шестерёнкой в расписании. История чатов и остальные функции сохранены.",
-  "notesEn": "Four tabs: Schedule, Grades, University, and UNIO AI. Restored the original three-sparkle AI icon and added restrained thinking animations. Open Settings from the timetable header. Local chats and existing features are preserved."
+  "version": "1.0.0-beta.16",
+  "versionCode": 17,
+  "apkUrl": "https://github.com/Japhet17429475581/unio/releases/download/v1.0.0-beta.16/UNIO-1.0.0-beta.16-universal.apk",
+  "notesRu": "???????? ???????? ?????????? ? ????????? ???????? ??????????? ????. ????????? ????????? ??????? ????? UNIO AI.",
+  "notesEn": "Improved schedule loading and stale-cache handling. Added local UNIO AI chat history."
 }
